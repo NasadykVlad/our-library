@@ -1,0 +1,43 @@
+.container {
+  margin-top: 1rem;
+}
+
+#uncontrolled-tab-example-tab-home {
+  color: black;
+}
+
+#uncontrolled-tab-example-tab-profile {
+  color: black;
+}
+
+.form-control:focus {
+  border-color: rgba(7, 0, 0, 0.04);
+  box-shadow: 0 0 0 0.25rem rgba(2, 0, 0, 0.13);
+}
+
+.btn-check:focus + .btn-primary, .btn-primary:focus {
+  box-shadow: 0 0 0 0.25rem rgba(2, 0, 0, 0.13);
+}
+
+.btn-check:checked + .btn-primary:focus, .btn-check:active + .btn-primary:focus, .btn-primary:active:focus, .btn-primary.active:focus, .show > .btn-primary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.25rem rgba(2, 0, 0, 0.13);
+}
+
+.auth-page {
+  width: 90%;
+  margin: 2rem auto;
+}
+
+// Позиція клавіш в авторизації
+@media (max-width: 448px) {
+  .buttons {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .submit-button {
+    margin-bottom: 1rem;
+  }
+}
