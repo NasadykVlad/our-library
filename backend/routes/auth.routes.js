@@ -88,28 +88,28 @@ router.post('/login',
 
             // Логіка, якщо такий користувач знайдений
             if (user) {
+
                 // Розхешуємо пароль і перевіримо чи сходиться той пароль,
                 // який ввів користувач з тим, який є в базі даних
-                const isMatch = bcrypter.compare(password, user.password)
+                bcrypter.compare(password, user.password, (err, ress) => {
+                    // Якщо паролі не співпадають, відправити це на Front End
+                    if (ress) {
+                        // Секретний токен для входу
+                        const jwtSecret = '213fdfdsjfsjUs]]f[g%dsodvt2352Fsdkm!!'
 
-                // Якщо паролі не співпадають, відправити це на Front End
-                if (!isMatch) {
-                    res.send({message: 'Паролі не співпадають'})
-                } else {
-                    // Секретний токен для входу
-                    const jwtSecret = '213fdfdsjfsjUs]]f[g%dsodvt2352Fsdkm!!'
-
-                    // Організовуємо вхід, за допомогою usedId, який є в базі в кожного
-                    // користувача індивідуальний, і визначаємо його час життя
-                    const token = jwtToken.sign(
-                        {UserId: user.id},
-                        jwtSecret,
-                        {expiresIn: '1h'}
+                        // Організовуємо вхід, за допомогою usedId, який є в базі в кожного
+                        // користувача індивідуальний, і визначаємо його час життя
+                        const token = jwtToken.sign(
+                            {UserId: user.id},
+                            jwtSecret,
+                            {expiresIn: '1h'}
                         )
-
-                    // Відсилаємо успішну відповідь на Front End
-                    res.send({token, userId: user.id})
-                }
+                        // Відсилаємо успішну відповідь на Front End
+                        res.send({token, userId: user.id})
+                    } else {
+                        res.send({message: 'Паролі не співпадають'})
+                    }
+                })
             } else {
                 // Якщо користувача не знайдено, відправити це на Front End
                 res.send({message: 'Такого користувача не існує'})
