@@ -26,12 +26,12 @@ function NavBar({isLogin}) {
                             </Nav>
                         }
                         {
-                            isLogin ?  <Nav className="me-auto">
+                            isLogin ?  <Nav>
                                     <Nav>
                                         <Nav.Link onClick={logOut()} href="/">Выйти</Nav.Link>
                                     </Nav>
                                 </Nav>  :
-                                <Nav className="me-auto">
+                                <Nav>
                                 <Nav>
                                     <Nav.Link href="/register">Реєстрація</Nav.Link>
                                     <Nav.Link href="/login">Вхід</Nav.Link>

@@ -13,6 +13,10 @@ const Auth = () => {
         passwordConfirm: ''
     })
 
+    let [rightLogin, setLogin] = useState(false)
+
+    let [errors, setErrors] = useState([])
+
     const {login} = useContext(AuthContext)
 
     // Надсилання даних Входу
@@ -29,10 +33,19 @@ const Auth = () => {
         })
             .then(res => {
                 if (res.data.token && res.data.userId) {
+
                     login(res.data.token, res.data.userId)
+
+                    setErrors(errors = [])
+                    setLogin(rightLogin = true)
+
                     return (
                         document.querySelector('.navbar-brand').click()
                     )
+                } else if (res.data.errors) {
+                    setErrors(errors = res.data.errors)
+                } else if (res.data.message && !res.data.errors) {
+                    setErrors(errors = [{msg: res.data.message}])
                 }
             })
 
@@ -46,15 +59,38 @@ const Auth = () => {
        <div className="auth-page">
            <h3>Вхід</h3>
            <Form noValidate onSubmit={e => e.preventDefault()}>
-               <Form.Group className="mb-3" controlId="formBasicEmail">
+               <Form.Group className="mb-3" controlId="formBasicEmail111">
                    <Form.Label>Електронна пошта</Form.Label>
                    <Form.Control id="email-login" type="email" placeholder="Введіть електронну пошту" />
                </Form.Group>
 
-               <Form.Group className="mb-3" controlId="formBasicPassword">
+               <Form.Group className="mb-3" controlId="formBasicPassword111">
                    <Form.Label>Пароль</Form.Label>
                    <Form.Control id="password-login" type="password" placeholder="Введіть пароль" />
                </Form.Group>
+
+               {rightLogin
+                   ? <div className="rightRegister">
+                       <p>Користувач успішно зареєстрований, тепер ви можете користуватись особистим кабінетом.</p>
+                   </div>
+                   :
+                   false
+               }
+
+               {errors.length > 0
+                   ? <div className="falseRegister">
+                       <h5>При вводі були знайдені помилки:</h5>
+                       {
+                           errors.map(val => {
+                               return <p>{val.msg}.</p>
+                           })
+                       }
+                   </div>
+                   :
+                   false
+               }
+
+
                <div className="buttons">
                    <Button onClick={sendDataLogin} className="submit-button" variant="primary" type="submit" style={{backgroundColor: 'black', border: 'none', marginRight: '20px'}}>
                        Увійти

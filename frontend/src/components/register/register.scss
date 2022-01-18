@@ -1,0 +1,23 @@
+.rightRegister {
+  border: 2px solid green;
+  width: fit-content;
+  border-radius: 40px;
+  padding: 10px;
+  margin: 10px auto;
+  text-align: center;
+  & p {
+    margin: 0;
+  }
+}
+
+.falseRegister {
+  border: 2px solid #ff0000;
+  width: fit-content;
+  border-radius: 40px;
+  padding: 10px;
+  margin: 10px auto;
+  text-align: center;
+  & p {
+    margin: 10px 0;
+  }
+}
