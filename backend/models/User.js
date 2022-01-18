@@ -1,5 +1,7 @@
 const {Schema, model, Types} = require('mongoose')
 
+
+// Схема, яка використовується в базі даних, для синхронізації таблиць
 const schema = new Schema({
     email: {type: String, required: true, unique: true},
     fullName: {type: String, required: true},
