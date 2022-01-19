@@ -33,20 +33,24 @@ const Register = () => {
             })
                 .then(res => {
                     if (res.data.message === "Некоректні дані при реєстрації") {
+                        setRegister(rightRegister = false)
                         setErrors(errors = res.data.errors)
+                    } else if (res.data.message === "Електронна пошта використовується іншим користувачем") {
+                        setRegister(rightRegister = false)
+                        setErrors(errors = [{msg: res.data.message}])
                     } else {
                         setErrors(errors = [])
                         setRegister(rightRegister = true)
+
+                        document.querySelector('#email-register').value = ''
+                        document.querySelector('#password-register').value = ''
+                        document.querySelector('#fullName-register').value = ''
+                        document.querySelector('#password2-register').value = ''
                    }
                 })
         } catch (err) {
             console.log(err)
         }
-
-        document.querySelector('#email-register').value = ''
-        document.querySelector('#password-register').value = ''
-        document.querySelector('#fullName-register').value = ''
-        document.querySelector('#password2-register').value = ''
     }
 
     return (
@@ -89,7 +93,6 @@ const Register = () => {
 
                  {errors.length > 0
                      ? <div className="falseRegister">
-                         <h5>При вводі були знайдені помилки:</h5>
                          {
                              errors.map(val => {
                                  return <p>{val.msg}.</p>

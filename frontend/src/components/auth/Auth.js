@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import './Auth.scss'
+import './auth.scss'
 import axios from 'axios'
 import {Form, Button} from "react-bootstrap"
 import {AuthContext} from "../../context/AuthContext";
@@ -47,6 +47,7 @@ const Auth = () => {
                 } else if (res.data.message && !res.data.errors) {
                     setErrors(errors = [{msg: res.data.message}])
                 }
+                console.log(localStorage.getItem('userData'))
             })
 
         setForm({
@@ -79,7 +80,6 @@ const Auth = () => {
 
                {errors.length > 0
                    ? <div className="falseRegister">
-                       <h5>При вводі були знайдені помилки:</h5>
                        {
                            errors.map(val => {
                                return <p>{val.msg}.</p>
