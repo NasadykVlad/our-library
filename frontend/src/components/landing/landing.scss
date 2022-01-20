@@ -1,0 +1,42 @@
+
+.Landing {
+  width: 100%;
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  padding: 9%;
+  & h1 {
+    text-transform: uppercase;
+  }
+  & h5 {
+    margin-top: 2rem;
+  }
+  & .btn-warning {
+    margin-top: 2rem;
+    background-color: #ffe083;
+  }
+  & .carousel {
+    width: 53%;
+    margin-top: 1rem;
+    &-inner {
+      border-radius: 110px
+    }
+  }
+  & .why-us {
+    margin-top: 3rem;
+  }
+}
+
+@media (max-width: 542px) {
+  .Landing .carousel {
+    width: 100%;
+  }
+}
+
+@media (max-width: 542px) {
+  .Landing {
+    background-position: unset;
+  }
+}
+
