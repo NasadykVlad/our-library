@@ -1,11 +1,12 @@
-import React, { useState, useContext } from 'react'
+import React, {useContext, useState} from 'react'
 import './auth.scss'
 import axios from 'axios'
-import {Form, Button} from "react-bootstrap"
+import {Button, Form} from "react-bootstrap"
 import {AuthContext} from "../../context/AuthContext";
+import {withNamespaces} from 'react-i18next';
 
 
-const Auth = () => {
+const Auth = ({t}) => {
     let [form, setForm] = useState({
         email: '',
         password: '',
@@ -23,7 +24,7 @@ const Auth = () => {
     const sendDataLogin = () => {
         setForm(form = {
             email: document.querySelector('#email-login').value,
-            password:  document.querySelector('#password-login').value,
+            password: document.querySelector('#password-login').value,
         })
 
         axios.post('/api/auth/login', {...form}, {
@@ -57,49 +58,50 @@ const Auth = () => {
     }
 
     return (
-       <div className="auth-page">
-           <h3>Вхід</h3>
-           <Form noValidate onSubmit={e => e.preventDefault()}>
-               <Form.Group className="mb-3" controlId="formBasicEmail111">
-                   <Form.Label>Електронна пошта</Form.Label>
-                   <Form.Control id="email-login" type="email" placeholder="Введіть електронну пошту" />
-               </Form.Group>
+        <div className="auth-page">
+            <h3>{t('login')}</h3>
+            <Form noValidate onSubmit={e => e.preventDefault()}>
+                <Form.Group className="mb-3" controlId="formBasicEmail111">
+                    <Form.Label>{t('email')}</Form.Label>
+                    <Form.Control id="email-login" type="email" placeholder={t('enter-email')}/>
+                </Form.Group>
 
-               <Form.Group className="mb-3" controlId="formBasicPassword111">
-                   <Form.Label>Пароль</Form.Label>
-                   <Form.Control id="password-login" type="password" placeholder="Введіть пароль" />
-               </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicPassword111">
+                    <Form.Label>{t('password')}</Form.Label>
+                    <Form.Control id="password-login" type="password" placeholder={t('enter-password')}/>
+                </Form.Group>
 
-               {rightLogin
-                   ? <div className="rightRegister">
-                       <p>Користувач успішно зареєстрований, тепер ви можете користуватись особистим кабінетом.</p>
-                   </div>
-                   :
-                   false
-               }
+                {rightLogin
+                    ? <div className="rightRegister">
+                        <p>{t('adress..')}</p>
+                    </div>
+                    :
+                    false
+                }
 
-               {errors.length > 0
-                   ? <div className="falseRegister">
-                       {
-                           errors.map(val => {
-                               return <p>{val.msg}.</p>
-                           })
-                       }
-                   </div>
-                   :
-                   false
-               }
+                {errors.length > 0
+                    ? <div className="falseRegister">
+                        {
+                            errors.map(val => {
+                                return <p>{t(val.msg)}.</p>
+                            })
+                        }
+                    </div>
+                    :
+                    false
+                }
 
 
-               <div className="buttons">
-                   <Button onClick={sendDataLogin} className="submit-button" variant="primary" type="submit" style={{backgroundColor: 'black', border: 'none', marginRight: '20px'}}>
-                       Увійти
-                   </Button>
-                   <Button href="/register" variant="secondary" type="submit">Ви ще не зареєстровані?</Button>
-               </div>
-           </Form>
-       </div>
+                <div className="buttons">
+                    <Button onClick={sendDataLogin} className="submit-button" variant="primary" type="submit"
+                            style={{backgroundColor: 'black', border: 'none', marginRight: '20px'}}>
+                        {t('enter')}
+                    </Button>
+                    <Button href="/register" variant="secondary" type="submit">{t('you-dont-register?')}</Button>
+                </div>
+            </Form>
+        </div>
     );
 };
 
-export default Auth;
+export default withNamespaces()(Auth);

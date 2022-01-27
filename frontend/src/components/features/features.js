@@ -1,14 +1,15 @@
 import React from 'react';
 import {Accordion, ListGroup, CardGroup, Card} from 'react-bootstrap'
 import './features.scss'
+import { withNamespaces } from 'react-i18next';
 
-const Features = () => {
+const Features = ({t}) => {
     return (
         <div className="Features">
-            <h1>Топ книг у жанрах</h1>
+            <h1>{t('top-books')}</h1>
             <Accordion defaultActiveKey="0">
                 <Accordion.Item eventKey="0">
-                    <Accordion.Header>Українська література</Accordion.Header>
+                    <Accordion.Header>{t('ukr-literat')}</Accordion.Header>
                     <Accordion.Body>
                         <ListGroup>
                             <ListGroup.Item>ТАМАРА ГОРІХА ЗЕРНЯ, «ДОЦЯ», 2019</ListGroup.Item>
@@ -20,7 +21,7 @@ const Features = () => {
                     </Accordion.Body>
                 </Accordion.Item>
                 <Accordion.Item eventKey="1">
-                    <Accordion.Header>Світова література</Accordion.Header>
+                    <Accordion.Header>{t('our-literat')}</Accordion.Header>
                     <Accordion.Body>
                         <ListGroup.Item>ИОГАНН ВОЛЬФГАНГ ГЁТЕ, «ФАУСТ», 1774-1831</ListGroup.Item>
                         <ListGroup.Item>УИЛЬЯМ ШЕКСПИР, «ГАМЛЕТ. РИЧАРД ІІІ», 1600</ListGroup.Item>
@@ -31,42 +32,34 @@ const Features = () => {
                 </Accordion.Item>
             </Accordion>
 
-            <h2 class="last-news">Останні новини</h2>
+            <h2 class="last-news">{t('last-news')}</h2>
 
             <CardGroup>
                 <Card>
                     <Card.Body>
-                        <Card.Title>1 лютого 2022 р. Українська бібліотечна асоціація святкує свій 27-й День народження!</Card.Title>
-                        <Card.Text>
-                            Запрошуємо долучитися до святкування і взяти участь у відеочеленджі.
-                        </Card.Text>
+                        <Card.Title>{t('first-febryary')}</Card.Title>
+                        <Card.Text>{t('invite-you')}</Card.Text>
                     </Card.Body>
                     <Card.Footer>
-                        <small className="text-muted">Востаннє оновлено 19.01.2022</small>
+                        <small className="text-muted">{t('last-updated')}</small>
                     </Card.Footer>
                 </Card>
                 <Card>
                     <Card.Body>
-                        <Card.Title>Щедрий вівторок у бібліотеках</Card.Title>
-                        <Card.Text>
-                            «Щедрий вівторок» об’єднав усю країну навколо добрих справ. До різних бібліотек ‒ публічних, шкільних, університетських, наукових ‒ за попередніми підрахунками було подаровано більше 4-х тисяч нових книг!
-                        </Card.Text>
+                        <Card.Title>{t('our-tuesday')}</Card.Title>
+                        <Card.Text>{t('our-tuesday-decription')}</Card.Text>
                     </Card.Body>
                     <Card.Footer>
-                        <small className="text-muted">Востаннє оновлено 19.01.2022</small>
+                        <small className="text-muted">{t('last-updated')}</small>
                     </Card.Footer>
                 </Card>
                 <Card>
                     <Card.Body>
-                        <Card.Title>1 листопада стартував Місяць цифрової грамотності!</Card.Title>
-                        <Card.Text>
-                            1 листопада 2021 р. в межах проєкту Міністерства цифрової трансформації Дія. Цифрова освіта стартував Місяць цифрової грамотності.
-
-                            Долучаємось до масштабної інформаційної кампанії, щоб надихнути користувачів бібліотек на набуття цифрових навичок!
-                        </Card.Text>
+                        <Card.Title>{t('first-november')}</Card.Title>
+                        <Card.Text>{t('first-november-description')}</Card.Text>
                     </Card.Body>
                     <Card.Footer>
-                        <small className="text-muted">Востаннє оновлено 19.01.2022</small>
+                        <small className="text-muted">{t('last-updated')}</small>
                     </Card.Footer>
                 </Card>
             </CardGroup>
@@ -75,4 +68,4 @@ const Features = () => {
     );
 };
 
-export default Features;
+export default withNamespaces()(Features);

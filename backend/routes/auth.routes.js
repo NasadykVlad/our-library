@@ -10,66 +10,66 @@ const jwtToken = require('jsonwebtoken')
 router.post('/registration',
     // Перевірка на помилки в плані вводу даних
     [
-        check('email', 'Некоректний email').isEmail(),
-        check('password', 'Некоректний пароль').isLength({min: 6}),
-        check('passwordConfirm', 'Некоректно повторений пароль').custom((value, { req }) => {
+        check('email', 'an-incorrect-email').isEmail(),
+        check('password', 'an-incorrect-password').isLength({min: 6}),
+        check('passwordConfirm', 'an-incorrect-repeat-password').custom((value, {req}) => {
             if (value !== req.body.password) {
                 return false
             } else {
                 return true
             }
         }),
-        check('fullName', "Некоректне ім'я").isLength({min: 3}),
+        check('fullName', "an-incorrect-repeat-name").isLength({min: 3}),
     ],
-    async(req, res) => {
-    try {
-        // Логіка, коли помилки знайдені
-        const errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            return res.status(200).json({
-                errors: errors.array(),
-                message: 'Некоректні дані при реєстрації'
-            })
+    async (req, res) => {
+        try {
+            // Логіка, коли помилки знайдені
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                return res.status(200).json({
+                    errors: errors.array(),
+                    message: 'Некоректні дані при реєстрації'
+                })
+            }
+
+            // Отримуємо дані, які користувач надіслав при реєстрації
+            const {email, password, passwordConfirm, fullName} = req.body
+
+            // Шукаємо в базі даних, чи такий користувач вже був зареєстрований
+            const isUsed = await User.findOne({email})
+
+            // Логіка, якщо такий користувач знайдений
+            if (isUsed) {
+                res.send({message: 'email-is-used'})
+            } else {
+                // З ціллю безпеки хешуємо пароль
+                const hashedPassword = await bcrypter.hash(password, 12)
+                const hashedPasswordConfirm = await bcrypter.hash(passwordConfirm, 12)
+
+                // Створюємо нового користувача через модель
+                const user = new User({
+                    email, password: hashedPassword, passwordConfirm: hashedPasswordConfirm, fullName
+                })
+
+                // Зберігаємо його в базі даних
+                await user.save()
+
+                // Повертаємо відповідь на Front-End
+                res.send({message: 'user-created'})
+            }
+        } catch (err) {
+            console.log(err)
         }
-
-        // Отримуємо дані, які користувач надіслав при реєстрації
-        const { email, password, passwordConfirm, fullName } = req.body
-
-        // Шукаємо в базі даних, чи такий користувач вже був зареєстрований
-        const isUsed = await User.findOne({email})
-
-        // Логіка, якщо такий користувач знайдений
-        if (isUsed) {
-            res.send({message: 'Електронна пошта використовується іншим користувачем'})
-        } else {
-           // З ціллю безпеки хешуємо пароль
-            const hashedPassword = await bcrypter.hash(password, 12)
-            const hashedPasswordConfirm = await bcrypter.hash(passwordConfirm, 12)
-
-            // Створюємо нового користувача через модель
-            const user = new User({
-                email, password: hashedPassword, passwordConfirm: hashedPasswordConfirm, fullName
-            })
-
-            // Зберігаємо його в базі даних
-            await user.save()
-
-            // Повертаємо відповідь на Front-End
-            res.send({message: 'Користувач створений успішно'})
-        }
-    } catch (err) {
-        console.log(err)
-    }
-})
+    })
 
 // Опрацювання запроса на вхід користувача
 router.post('/login',
     // Перевірка на помилки в плані вводу даних
     [
-        check('email', 'Некоректний email').isEmail(),
-        check('password', 'Некоректний пароль').isLength({min: 1})
+        check('email', 'an-incorrect-email').isEmail(),
+        check('password', 'an-incorrect-password').isLength({min: 1})
     ],
-    async(req, res) => {
+    async (req, res) => {
         try {
             // Логіка, коли помилки знайдені
             const errors = validationResult(req)
@@ -81,7 +81,7 @@ router.post('/login',
             }
 
             // Отримуємо дані, які користувач надіслав при реєстрації
-            const { email, password } = req.body
+            const {email, password} = req.body
 
             // Шукаємо в базі даних, чи такий користувач вже був зареєстрований
             const user = await User.findOne({email})
@@ -107,12 +107,12 @@ router.post('/login',
                         // Відсилаємо успішну відповідь на Front End
                         res.send({token, userId: user.id})
                     } else {
-                        res.send({message: 'Паролі не співпадають'})
+                        res.send({message: 'an-incorrect-password'})
                     }
                 })
             } else {
                 // Якщо користувача не знайдено, відправити це на Front End
-                res.send({message: 'Такого користувача не існує'})
+                res.send({message: 'you-dont-register'})
             }
         } catch (err) {
             console.log(err)

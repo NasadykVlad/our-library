@@ -9,6 +9,7 @@ import About from "./components/about/about";
 import ListOfBooks from "./components/list-of-books/list-of-books";
 
 
+// Оприділяємо по змінній isLogin, які сторінки показувати, чи лендінг чи особистий кабінет
 export const useRoutes = (isLogin) => {
     if (isLogin) {
         return (

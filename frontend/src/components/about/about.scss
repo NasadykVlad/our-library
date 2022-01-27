@@ -43,6 +43,16 @@
     }
   }
 }
+.modal-footer .btn-primary {
+  background: #fff;
+  color: black;
+  border-color: black;
+  &:hover {
+    background: black;
+    color: #fff;
+    border-color: #fff;
+  }
+}
 
 @media (max-width: 1000px) {
   .modal-body {

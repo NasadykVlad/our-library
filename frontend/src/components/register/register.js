@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import './register.scss'
 import axios from 'axios'
 import {Form, Button} from "react-bootstrap"
+import { withNamespaces } from 'react-i18next';
 
-const Register = () => {
+const Register = ({t}) => {
     let [form, setForm] = useState({
         email: '',
         password: '',
@@ -35,9 +36,9 @@ const Register = () => {
                     if (res.data.message === "Некоректні дані при реєстрації") {
                         setRegister(rightRegister = false)
                         setErrors(errors = res.data.errors)
-                    } else if (res.data.message === "Електронна пошта використовується іншим користувачем") {
+                    } else if (res.data.message === "email-is-used") {
                         setRegister(rightRegister = false)
-                        setErrors(errors = [{msg: res.data.message}])
+                        setErrors(errors = [{msg: t(res.data.message)}])
                     } else {
                         setErrors(errors = [])
                         setRegister(rightRegister = true)
@@ -55,37 +56,37 @@ const Register = () => {
 
     return (
         <div className="auth-page">
-            <h3>Реєстрація</h3>
+            <h3>{t('register')}</h3>
              <Form noValidate onSubmit={e => e.preventDefault()}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Електронна пошта</Form.Label>
-                    <Form.Control id="email-register" type="email" placeholder="Введіть електронну пошту" />
+                    <Form.Label>{t('email')}</Form.Label>
+                    <Form.Control id="email-register" type="email" placeholder={t('enter-email')} />
                     <Form.Text className="text-muted">
-                        Нікому не сповіщайте свої дані!
+                        {t('No one notify your data!')}
                     </Form.Text>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicName">
-                    <Form.Label>Як вас звуть?</Form.Label>
-                    <Form.Control id="fullName-register" type="text" placeholder="Введіть ваше прізвище та ім'я" />
+                    <Form.Label>{t('name')}</Form.Label>
+                    <Form.Control id="fullName-register" type="text" placeholder={t('enter-name')} />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Пароль</Form.Label>
-                    <Form.Control id="password-register" type="password" placeholder="Введіть пароль" />
+                    <Form.Label>{t('password')}</Form.Label>
+                    <Form.Control id="password-register" type="password" placeholder={t('enter-password')} />
                     <Form.Text className="text-muted">
-                        Пароль повинен містити від 6 символів.
+                        {t('The password must contain from 6 characters.')}
                     </Form.Text>
                 </Form.Group>
 
                  <Form.Group className="mb-3" controlId="formBasic2Password">
-                     <Form.Label>Повторення паролю</Form.Label>
-                     <Form.Control id="password2-register" type="password" placeholder="Повторіть пароль" />
+                     <Form.Label>{t('confirm-password')}</Form.Label>
+                     <Form.Control id="password2-register" type="password" placeholder={t('enter-confirm-password')} />
                  </Form.Group>
 
                  {rightRegister
                      ? <div className="rightRegister">
-                         <p>Користувач успішно зареєстрований, тепер ви можете користуватись особистим кабінетом.</p>
+                         <p>{t('The user has been successfully registered, now you can use a personal cabinet.')}</p>
                      </div>
                      :
                      false
@@ -95,7 +96,7 @@ const Register = () => {
                      ? <div className="falseRegister">
                          {
                              errors.map(val => {
-                                 return <p>{val.msg}.</p>
+                                 return <p>{t(val.msg)}.</p>
                              })
                          }
                      </div>
@@ -105,13 +106,13 @@ const Register = () => {
 
                 <div className="buttons">
                     <Button onClick={sendDataRegister} className="submit-button" variant="primary" type="submit" style={{backgroundColor: 'black', border: 'none', marginRight: '20px'}}>
-                        Зареєструватись
+                        {t('reg')}
                     </Button>
-                    <Button href="/login" variant="secondary" type="submit">Ви вже зареєстровані?</Button>
+                    <Button href="/login" variant="secondary" type="submit">{t('after-ref')}</Button>
                 </div>
             </Form>
         </div>
     );
 };
 
-export default Register;
+export default withNamespaces()(Register);
