@@ -31,7 +31,7 @@ function NavBar({t}) {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         {
                             isLogin ?  <Nav className="me-auto">
-                                <Nav.Link href="/list-of-books">Твої книжки</Nav.Link>
+                                <Nav.Link href="/list-of-books">{t('your-books')}</Nav.Link>
                             </Nav> : <Nav className="me-auto">
                                 <Nav.Link href="/features">{t('news')}</Nav.Link>
                                 <Nav.Link href="/about">{t('about')}</Nav.Link>

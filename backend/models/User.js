@@ -7,7 +7,7 @@ const schema = new Schema({
     fullName: {type: String, required: true},
     password: {type: String, required: true},
     passwordConfirm: {type: String, required: true},
-    todos: [{type: Types.ObjectId, ref: 'Todo'}]
+    books: [{type: Types.ObjectId, ref: 'Todo'}]
 })
 
 module.exports = model('User', schema)

@@ -8,6 +8,7 @@ app.use(express.json({extended: true}))
 
 // Корененвий роут для запросів
 app.use('/api/auth/', require("./routes/auth.routes"))
+app.use('/api/books/', require("./routes/books.routes"))
 
 // Функція запуску сервера
 async function start() {

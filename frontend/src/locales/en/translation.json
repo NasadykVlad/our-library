@@ -61,5 +61,22 @@
   "adress..": "Redirection...",
   "enter": "Log in",
   "you-dont-register": "There is no such user",
-  "you-dont-register?": "Not registered yet?"
+  "you-dont-register?": "Not registered yet?",
+  "lead-books": "In this section you manage your book list. You can add, delete, or mark a book as read or important to read.",
+  "your-books": "Your books",
+  "add-book": "Add a book:",
+  "add": "Add",
+  "enter-book-name": "Enter a title for the book",
+  "list-book": "List of your books:",
+  "enter-book-name-for-search": "Enter a title for the book to search for it",
+  "enter-correctly-name-book": "Please enter a valid book title.",
+  "operation-good": "The operation is successful!",
+  "operation-bad": "Operation failed!",
+  "book-important": "The book is marked as important.",
+  "book-dont-important": "The book is marked as unimportant.",
+  "try-again": "Please try again later.",
+  "book-read": "The book is marked as read.",
+  "book-dont-read": "The book is marked as unread.",
+  "book-deleted": "Book deleted.",
+  "book-added": "Book added."
 }
