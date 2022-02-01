@@ -4,6 +4,8 @@ const User = require('../models/User')
 const {check, validationResult} = require('express-validator')
 const bcrypter = require('bcryptjs')
 const jwtToken = require('jsonwebtoken')
+const fileService = require('../services/fileServices')
+const File = require('../models/File')
 
 
 // Опрацювання запроса на реєстрацію користувача
@@ -53,6 +55,8 @@ router.post('/registration',
 
                 // Зберігаємо його в базі даних
                 await user.save()
+
+                await fileService.createDir(new File({user: user.id, name: ''}))
 
                 // Повертаємо відповідь на Front-End
                 res.send({message: 'user-created'})
