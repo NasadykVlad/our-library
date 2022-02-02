@@ -7,11 +7,9 @@ const schema = new Schema({
     owner: {type: Types.ObjectId, ref: 'User'},
     name: {type: String, required: true},
     type: {type: String},
-    accessLink: {type: String},
+    date: {type: Date, default: Date.now()},
     size: {type: Number, default: 0},
     path: {type: String, default: ''},
-    parent: {type: Types.ObjectId, ref: 'File'},
-    childs: [{type: Types.ObjectId, ref: 'File'}]
 })
 
 module.exports = model('File', schema)

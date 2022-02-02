@@ -6,6 +6,7 @@ import Register from "./components/register/register";
 import Landing from "./components/landing/landing";
 import Features from "./components/features/features";
 import About from "./components/about/about";
+import FileCloud from "./components/filecloud/filecloud"
 import ListOfBooks from "./components/list-of-books/list-of-books";
 
 
@@ -16,6 +17,7 @@ export const useRoutes = (isLogin) => {
             <Routes>
                 <Route path="/" exact element={<MainPage />} />
                 <Route path="/list-of-books" exact element={<ListOfBooks />} />
+                <Route path="/filecloud" exact element={<FileCloud />} />
             </Routes>
         )} else {
         return (

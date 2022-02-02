@@ -48,7 +48,6 @@ const Auth = ({t}) => {
                 } else if (res.data.message && !res.data.errors) {
                     setErrors(errors = [{msg: res.data.message}])
                 }
-                console.log(localStorage.getItem('userData'))
             })
 
         setForm({

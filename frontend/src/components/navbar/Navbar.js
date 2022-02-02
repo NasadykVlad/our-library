@@ -32,6 +32,7 @@ function NavBar({t}) {
                         {
                             isLogin ?  <Nav className="me-auto">
                                 <Nav.Link href="/list-of-books">{t('your-books')}</Nav.Link>
+                                <Nav.Link href="/filecloud">Файлова хмара</Nav.Link>
                             </Nav> : <Nav className="me-auto">
                                 <Nav.Link href="/features">{t('news')}</Nav.Link>
                                 <Nav.Link href="/about">{t('about')}</Nav.Link>

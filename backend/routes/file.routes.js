@@ -3,7 +3,8 @@ const router = Router()
 const File = require('../models/File')
 const fileController = require('../controllers/fileController')
 
-router.post('', fileController.createDir)
-router.get('', fileController.getFiles)
+router.post('/upload', fileController.uploadFile)
+router.get('/get', fileController.getFiles)
+router.post('/downloadFile', fileController.downloadFile)
 
 module.exports = router
