@@ -6,9 +6,35 @@ const fs = require("fs");
 class FileController {
     async getFiles(req, res) {
         try {
-            const {userId} = req.query
 
-            const files = await File.find({owner: userId})
+            const {userId, sort} = req.query
+
+            let files
+
+            switch (sort) {
+                case 'name1':
+                    files = await File.find({owner: userId}).sort({name: 1})
+                    break
+                case 'size1':
+                    files = await File.find({owner: userId}).sort({size: 1})
+                    break
+                case 'date1':
+                    files = await File.find({owner: userId}).sort({date: 1})
+                    break
+                case 'name-1':
+                    files = await File.find({owner: userId}).sort({name: -1})
+                    break
+                case 'size-1':
+                    files = await File.find({owner: userId}).sort({size: -1})
+                    break
+                case 'date-1':
+                    files = await File.find({owner: userId}).sort({date: -1})
+                    break
+                default:
+                    files = await File.find({owner: userId}).sort({date: -1})
+                    break
+            }
+
             if (files) {
                 return res.json({files})
             } else {
@@ -58,6 +84,29 @@ class FileController {
 
             if (fs.existsSync(filePath)) {
                 return resp.download(filePath, file.name)
+            }
+
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    async removeFile(req, resp) {
+        try {
+            const {userId, id} = req.body
+
+            const file = await File.findOne({owner: userId, _id: id})
+
+            const filePath = `D:\\Programming\\WEB_UI_PROGRAMMING\\Project\\our-library\\backend\\files\\${userId}\\${file.name}`
+
+            if (file) {
+                await File.deleteOne({owner: userId, _id: id})
+
+                resp.json({status: 'ok'})
+            }
+
+            if (filePath) {
+                fs.rmSync(filePath)
             }
 
         } catch (e) {
