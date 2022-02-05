@@ -114,6 +114,24 @@ class FileController {
         }
     }
 
+    async shareFile(req, resp) {
+        try {
+            const {userId, id} = req.body
+
+            const file = await File.findOne({owner: userId, _id: id})
+
+            const filePath = `D:\\Programming\\WEB_UI_PROGRAMMING\\Project\\our-library\\backend\\files\\${userId}\\${file.name}`
+
+            if (file && filePath) {
+                resp.json({link: `localhost:5001/${userId}/${file.name}`})
+            } else {
+                resp.json({message: 'File is not defined'})
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
 }
 
 module.exports = new FileController()

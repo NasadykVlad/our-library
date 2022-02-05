@@ -17,6 +17,7 @@ const FileCloud = ({t}) => {
     let [dirFiles, setDirFiles] = React.useState([])
     let [file, setFile] = React.useState();
     let [term, changeTerm] = React.useState('');
+    let [errorEnterBook, changeErrorEnterBook] = React.useState('')
 
     useEffect(() => {
         getFiles()
@@ -37,12 +38,14 @@ const FileCloud = ({t}) => {
     const UploadContent = (event) => {
         event.preventDefault();
         if (event.target.files[0]) {
+            changeErrorEnterBook(errorEnterBook = '')
             setFile(event.target.files[0]);
         }
     };
 
     const uploadFile = (e) => {
         e.preventDefault()
+        changeErrorEnterBook(errorEnterBook = '')
         if (file) {
             const formData = new FormData()
             formData.append('file', file)
@@ -57,6 +60,8 @@ const FileCloud = ({t}) => {
                     document.querySelector('#file').value = ''
                     setFile(file = false);
                 })
+        } else {
+            changeErrorEnterBook(errorEnterBook = 'Спершу завантажте книгу вище')
         }
     }
 
@@ -101,6 +106,16 @@ const FileCloud = ({t}) => {
             })
     }
 
+    const shareBook = (id) => {
+        axios.post('/api/files/share', {
+            userId,
+            id
+        })
+            .then(res => {
+                navigator.clipboard.writeText(res.data.link)
+            })
+    }
+
     const searchBooks = (items, term) => {
         if (term.length === 0) {
             return items
@@ -122,6 +137,7 @@ const FileCloud = ({t}) => {
             <Form.Group controlId="formFile" className="mb-3">
                 <Form.Label>Виберіть книгу, яку хочете завантажити у файлову хмару:</Form.Label>
                 <Form.Control id="file" onChange={UploadContent} type="file" />
+                {errorEnterBook ? <p style={{'color': 'red', 'marginBottom': '0'}}>{errorEnterBook}</p> : ''}
                 <Button style={{'backgroundColor': 'black', 'border': 'none', 'marginTop': '10px'}} onClick={(event) => uploadFile(event)} variant="primary">
                     Завантажити книгу
                 </Button>
@@ -175,7 +191,7 @@ const FileCloud = ({t}) => {
                         <td>
                             {val.name}
                             <span style={{'float': 'right'}}>
-                                <FiShare2 className='share-ic' />
+                                <FiShare2 className='share-ic' onClick={() => shareBook(val._id)}/>
                                 <FaFileDownload onClick={(e) => downloadFile(e, val)} className='download-icon'/>
                                 <FiTrash2 onClick={() => deleteFile(val._id)} className='remove-icon'/>
                             </span>
