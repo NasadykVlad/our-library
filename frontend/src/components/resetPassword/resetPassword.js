@@ -41,6 +41,7 @@ const ResetPassword = ({t}) => {
         if (input2.length !== 4) {
             setErrorsTokenPassword(errorsTokenPassword = [{msg: t('enter-token-4')}])
         } else {
+            setErrorsTokenPassword(errorsTokenPassword = [])
             setLoading(loading = true)
             axios.post('/api/auth/sendToken', {
                 email,

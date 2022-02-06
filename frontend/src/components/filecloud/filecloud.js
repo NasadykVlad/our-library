@@ -175,7 +175,7 @@ const FileCloud = ({t}) => {
         <div className="FileCloud">
             <h4>{t('in-this-page')}</h4>
 
-                {visibleFilteredBooks.length > 0 ? <div>
+                {dirFiles.length > 0 ? <div>
                     <p style={{'marginBottom': '0'}}>{t('you-powerfull')} {+space.toFixed(1)} МБ {t('as')} 500 МБ</p>
                     <ProgressBar style={{'width': '100%', 'marginBottom': '1rem'}} animated now={+space.toFixed(1) / 5} />
                 </div> : ''}
@@ -188,14 +188,13 @@ const FileCloud = ({t}) => {
                     {t('down-book')}
                 </Button>
             </Form.Group>
-            {visibleFilteredBooks.length > 0 ?
-                <div>
                     <Form style={{'marginTop': '1rem', 'marginBottom': '2rem'}}>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Control className="book-names" onChange={() => addTerm()} type="text" placeholder={t('enter-book-name-for-search')} />
                         </Form.Group>
                     </Form>
-
+            {visibleFilteredBooks.length > 0 ?
+                <div>
                 <div className='sorting'>
                     <h5>{t('use-sort')}</h5>
                     <div className='other-sort'>

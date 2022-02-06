@@ -162,7 +162,7 @@ const ListOfBooks = ({t}) => {
                 </Button>
             </Form>
             {error ? <p style={{'color': 'red'}}>{t(error)}</p> : ''}
-            {visibleFilteredBooks.length > 0 ?
+            {books.length > 0 ?
                 <div>
                     <h5>{t('list-book')}</h5>
                     <Form style={{'marginTop': '1rem', 'marginBottom': '2rem'}}>
