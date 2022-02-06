@@ -1,5 +1,3 @@
-const fileService = require('../services/fileServices')
-const User = require('../models/User')
 const File = require('../models/File')
 const fs = require("fs");
 

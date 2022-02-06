@@ -14,6 +14,7 @@ app.use(express.json({extended: true}))
 app.use('/api/auth/', require("./routes/auth.routes"))
 app.use('/api/books/', require("./routes/books.routes"))
 app.use('/api/files', require('./routes/file.routes'))
+app.use('/api/account', require('./routes/account.routes'))
 
 // Функція запуску сервера
 async function start() {
