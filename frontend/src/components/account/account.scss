@@ -1,0 +1,9 @@
+.Account {
+  background-color: #F4F9E2;
+  min-height: 100vh;
+  padding: 2rem;
+
+  & .card {
+    margin-bottom: 2rem;
+  }
+}

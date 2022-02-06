@@ -10,6 +10,8 @@ import {FaFileDownload} from 'react-icons/fa'
 import {FiTrash2, FiShare2} from 'react-icons/fi'
 import {AiOutlineSortAscending, AiOutlineSortDescending} from 'react-icons/ai'
 import {BsSortNumericDownAlt, BsSortNumericUpAlt} from 'react-icons/bs'
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 import Loader from '../../Loader'
 
 const FileCloud = ({t}) => {
@@ -38,6 +40,7 @@ const FileCloud = ({t}) => {
             .then(res => {
                 setDirFiles(dirFiles = res.data.files)
                 setLoading(loading = false)
+                setSpace(space = 0)
                 dirFiles.forEach(book => {
                     setSpace(space += book.size / 1024 / 1024)
                 })
@@ -60,7 +63,7 @@ const FileCloud = ({t}) => {
         changeErrorEnterBook(errorEnterBook = '')
         if (file) {
             if (file.type !== 'text/plain' && file.type !== 'application/octet-stream' && file.type !== 'application/epub+zip' && file.type !== 'application/pdf' && file.type !== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-                changeErrorEnterBook(errorEnterBook = 'Ви не можете завантажити файл іншого формату, окрім .pdf, .doc, .docx, .fb2, .epub, .mobi, .txt, .djvu')
+                changeErrorEnterBook(errorEnterBook = t('you-dont-download-other-formats'))
                 setFile(file = false);
                 document.querySelector('#file').value = ''
             } else {
@@ -78,10 +81,11 @@ const FileCloud = ({t}) => {
                         document.querySelector('#file').value = ''
                         setFile(file = false);
                         setLoading(loading = false)
+                        NotificationManager.success(t('file-uploading'), t('operation-good'));
                     })
             }
         } else {
-            changeErrorEnterBook(errorEnterBook = 'Спершу завантажте книгу вище')
+            changeErrorEnterBook(errorEnterBook = t('firstly-download-up'))
         }
     }
 
@@ -103,6 +107,7 @@ const FileCloud = ({t}) => {
                 link.click()
                 link.remove()
                 setLoading(loading = false)
+                NotificationManager.success(t('file-downloading'), t('operation-good'));
             })
     }
 
@@ -115,6 +120,7 @@ const FileCloud = ({t}) => {
             .then(res => {
                 getFiles()
                 setLoading(loading = false)
+                NotificationManager.success(t('file-removed'), t('operation-good'));
             })
     }
 
@@ -129,6 +135,7 @@ const FileCloud = ({t}) => {
             .then(res => {
                 setDirFiles(dirFiles = res.data.files)
                 setLoading(loading = false)
+                NotificationManager.success(t('sort-changed'), t('operation-good'));
             })
             .catch(err => {
                 console.log(err)
@@ -144,6 +151,7 @@ const FileCloud = ({t}) => {
             .then(res => {
                 navigator.clipboard.writeText(res.data.link)
                 setLoading(loading = false)
+                NotificationManager.success(t('link-copied'), t('operation-good'));
             })
     }
 
@@ -165,19 +173,19 @@ const FileCloud = ({t}) => {
 
     return (
         <div className="FileCloud">
-            <h4>У цьому розділі ви маєте можливість завантажити у свій особистий кабінет книги, які після цього Ви зможете скачувати, видаляти, зберігати, сортувати за багатьма параметрами, і навіть ділитись за допомогою посилання книгами двох форматів .txt та .pdf зі своїми друзями.</h4>
+            <h4>{t('in-this-page')}</h4>
 
                 {visibleFilteredBooks.length > 0 ? <div>
-                    <p style={{'marginBottom': '0'}}>У вас зайнято {+space.toFixed(1)} МБ із 500 МБ</p>
+                    <p style={{'marginBottom': '0'}}>{t('you-powerfull')} {+space.toFixed(1)} МБ {t('as')} 500 МБ</p>
                     <ProgressBar style={{'width': '100%', 'marginBottom': '1rem'}} animated now={+space.toFixed(1) / 5} />
                 </div> : ''}
 
             <Form.Group controlId="formFile" className="mb-3">
-                <Form.Label>Виберіть книгу, яку хочете завантажити у файлову хмару:</Form.Label>
+                <Form.Label>{t('pick-up')}</Form.Label>
                 <Form.Control id="file" onChange={UploadContent} type="file" accept=".pdf, .doc, .docx, .fb2, .epub, .mobi, .txt, .djvu" />
                 {errorEnterBook ? <p style={{'color': 'red', 'marginBottom': '0'}}>{errorEnterBook}</p> : ''}
                 <Button style={{'backgroundColor': 'black', 'border': 'none', 'marginTop': '10px'}} onClick={(event) => uploadFile(event)} variant="primary">
-                    Завантажити книгу
+                    {t('down-book')}
                 </Button>
             </Form.Group>
             {visibleFilteredBooks.length > 0 ?
@@ -189,23 +197,23 @@ const FileCloud = ({t}) => {
                     </Form>
 
                 <div className='sorting'>
-                    <h5>Щоб скористатись сортування натисніть на відповідну іконку</h5>
+                    <h5>{t('use-sort')}</h5>
                     <div className='other-sort'>
-                        <p>Сортування по імені</p>
+                        <p>{t('sort-by-name')}</p>
                         <div>
                             <AiOutlineSortAscending onClick={() => changeSort('name1')}/>
                             <AiOutlineSortDescending onClick={() => changeSort('name-1')}/>
                         </div>
                     </div>
                     <div className='other-sort'>
-                        <p>Сортування по даті додавання</p>
+                        <p>{t('sort-by-date')}</p>
                         <div>
                             <BsSortNumericDownAlt onClick={() => changeSort('date-1')}/>
                             <BsSortNumericUpAlt onClick={() => changeSort('date1')}/>
                         </div>
                     </div>
                     <div className='other-sort'>
-                        <p>Сортування по розміру</p>
+                        <p>{t('sort-by-size')}</p>
                         <div>
                             <BsSortNumericDownAlt onClick={() => changeSort('size-1')}/>
                             <BsSortNumericUpAlt onClick={() => changeSort('size1')}/>
@@ -218,10 +226,10 @@ const FileCloud = ({t}) => {
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Тип</th>
-                    <th>Ім'я</th>
-                    <th>Дата</th>
-                    <th>Розмір</th>
+                    <th>{t('type')}</th>
+                    <th>{t('name1')}</th>
+                    <th>{t('date')}</th>
+                    <th>{t('size')}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -246,6 +254,7 @@ const FileCloud = ({t}) => {
                 </tbody>
             </Table> : ''
             }
+            <NotificationContainer />
             {loading ? <Loader /> : null}
         </div>
     )
