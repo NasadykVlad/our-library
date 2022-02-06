@@ -3,6 +3,7 @@ import './auth.scss'
 import axios from 'axios'
 import {Button, Form} from "react-bootstrap"
 import {AuthContext} from "../../context/AuthContext";
+import Loader from '../../Loader'
 import {withNamespaces} from 'react-i18next';
 
 
@@ -13,15 +14,15 @@ const Auth = ({t}) => {
         fullName: '',
         passwordConfirm: ''
     })
-
     let [rightLogin, setLogin] = useState(false)
-
+    let [loading, setLoading] = React.useState(false);
     let [errors, setErrors] = useState([])
 
     const {login} = useContext(AuthContext)
 
     // Надсилання даних Входу
     const sendDataLogin = () => {
+        setLoading(loading = true)
         setForm(form = {
             email: document.querySelector('#email-login').value,
             password: document.querySelector('#password-login').value,
@@ -48,6 +49,7 @@ const Auth = ({t}) => {
                 } else if (res.data.message && !res.data.errors) {
                     setErrors(errors = [{msg: res.data.message}])
                 }
+                setLoading(loading = false)
             })
 
         setForm({
@@ -71,18 +73,18 @@ const Auth = ({t}) => {
                 </Form.Group>
 
                 {rightLogin
-                    ? <div className="rightRegister">
-                        <p>{t('adress..')}</p>
+                    ? <div>
+                        <p style={{'color': 'green'}}>{t('adress..')}</p>
                     </div>
                     :
                     false
                 }
 
                 {errors.length > 0
-                    ? <div className="falseRegister">
+                    ? <div>
                         {
                             errors.map(val => {
-                                return <p>{t(val.msg)}.</p>
+                                return <p style={{'color': 'red'}}>{t(val.msg)}.</p>
                             })
                         }
                     </div>
@@ -96,9 +98,11 @@ const Auth = ({t}) => {
                             style={{backgroundColor: 'black', border: 'none', marginRight: '20px'}}>
                         {t('enter')}
                     </Button>
-                    <Button href="/register" variant="secondary" type="submit">{t('you-dont-register?')}</Button>
+                    <Button href="/register" variant="secondary" style={{marginRight: '20px'}} type="submit">{t('you-dont-register?')}</Button>
+                    <Button href="/resetPassword" variant="secondary" type="submit">{t('recove-acc')}</Button>
                 </div>
             </Form>
+            {loading ? <Loader /> : null}
         </div>
     );
 };

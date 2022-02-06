@@ -2,6 +2,9 @@
   background-color: #F4F9E2;
   min-height: 100vh;
   padding: 2rem;
+  & h4 {
+    margin-bottom: 2rem;
+  }
   & td {
     vertical-align: middle;
     & svg {

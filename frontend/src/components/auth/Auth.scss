@@ -36,6 +36,13 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    & a {
+      margin-right: 0!important;
+      margin-left: 0;
+      &:nth-child(3) {
+        margin-top: 15px;
+      }
+    }
   }
 
   .submit-button {

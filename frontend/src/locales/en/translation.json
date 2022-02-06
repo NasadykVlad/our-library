@@ -78,5 +78,18 @@
   "book-read": "The book is marked as read.",
   "book-dont-read": "The book is marked as unread.",
   "book-deleted": "Book deleted.",
-  "book-added": "Book added."
+  "book-added": "Book added.",
+  "recove-account": "Here, you can recover your password to your email account",
+  "send": "Send",
+  "enter-token": "Enter a 4-character token from the email you received",
+  "ent-tone": "Enter the token",
+  "ent-new-pass": "Enter a new password",
+  "password-change": "Password changed, log in to your personal account on the login page",
+  "token-is-not-correct": "The token is incorrect",
+  "enter-token-4": "Enter a 4-digit token",
+  "change-password": "Change password",
+  "token-send": "The token was sent to the specified email.",
+  "enter-usage-new-password": "Log in to your account with a new password.",
+  "recove-acc": "Forgot your password?",
+  "acc-ready": "Your account is ready to sign in."
 }

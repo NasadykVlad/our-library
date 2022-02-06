@@ -26,6 +26,12 @@ div[style='position: fixed;'] {
   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: #000 transparent transparent transparent;
 }
+
+.lds-ring-white div {
+  border: 8px solid #000;
+  border-color: #1e41cb transparent transparent transparent;
+}
+
 .lds-ring div:nth-child(1) {
   animation-delay: -0.45s;
 }

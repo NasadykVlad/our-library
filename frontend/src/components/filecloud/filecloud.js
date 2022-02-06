@@ -2,22 +2,25 @@ import React, {useContext, useEffect} from 'react'
 import './filecloud.scss'
 import axios from 'axios'
 import {AuthContext} from "../../context/AuthContext";
-import {Button, Form, Table} from 'react-bootstrap'
+import {Button, Form, Table, ProgressBar} from 'react-bootstrap'
 import { withNamespaces } from 'react-i18next';
-import {MdInsertPhoto} from 'react-icons/md'
+import {BsBook} from 'react-icons/bs'
+import {MdMenuBook} from 'react-icons/md'
 import {FaFileDownload} from 'react-icons/fa'
 import {FiTrash2, FiShare2} from 'react-icons/fi'
 import {AiOutlineSortAscending, AiOutlineSortDescending} from 'react-icons/ai'
 import {BsSortNumericDownAlt, BsSortNumericUpAlt} from 'react-icons/bs'
+import Loader from '../../Loader'
 
 const FileCloud = ({t}) => {
-
     const {userId} = useContext(AuthContext)
 
     let [dirFiles, setDirFiles] = React.useState([])
     let [file, setFile] = React.useState();
     let [term, changeTerm] = React.useState('');
     let [errorEnterBook, changeErrorEnterBook] = React.useState('')
+    let [loading, setLoading] = React.useState(false);
+    let [space, setSpace] = React.useState(0)
 
     useEffect(() => {
         getFiles()
@@ -25,6 +28,8 @@ const FileCloud = ({t}) => {
     },[])
 
     const getFiles = () => {
+        setLoading(loading = true)
+
         axios.get('/api/files/get', {
             params: {
                 userId
@@ -32,14 +37,21 @@ const FileCloud = ({t}) => {
         })
             .then(res => {
                 setDirFiles(dirFiles = res.data.files)
+                setLoading(loading = false)
+                dirFiles.forEach(book => {
+                    setSpace(space += book.size / 1024 / 1024)
+                })
             })
     }
 
     const UploadContent = (event) => {
+        setLoading(loading = true)
         event.preventDefault();
+
         if (event.target.files[0]) {
             changeErrorEnterBook(errorEnterBook = '')
             setFile(event.target.files[0]);
+            setLoading(loading = false)
         }
     };
 
@@ -47,26 +59,35 @@ const FileCloud = ({t}) => {
         e.preventDefault()
         changeErrorEnterBook(errorEnterBook = '')
         if (file) {
-            const formData = new FormData()
-            formData.append('file', file)
+            if (file.type !== 'text/plain' && file.type !== 'application/octet-stream' && file.type !== 'application/epub+zip' && file.type !== 'application/pdf' && file.type !== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                changeErrorEnterBook(errorEnterBook = 'Ви не можете завантажити файл іншого формату, окрім .pdf, .doc, .docx, .fb2, .epub, .mobi, .txt, .djvu')
+                setFile(file = false);
+                document.querySelector('#file').value = ''
+            } else {
+                setLoading(loading = true)
+                const formData = new FormData()
+                formData.append('file', file)
 
-            axios.post('api/files/upload', formData, {
-                params: {
-                    userId
-                }
-            })
-                .then(res => {
-                    getFiles()
-                    document.querySelector('#file').value = ''
-                    setFile(file = false);
+                axios.post('api/files/upload', formData, {
+                    params: {
+                        userId
+                    }
                 })
+                    .then(res => {
+                        getFiles()
+                        document.querySelector('#file').value = ''
+                        setFile(file = false);
+                        setLoading(loading = false)
+                    })
+            }
         } else {
             changeErrorEnterBook(errorEnterBook = 'Спершу завантажте книгу вище')
         }
     }
 
-    async function downloadFile (e, file) {
+    const downloadFile = (e, file) => {
         e.stopPropagation()
+        setLoading(loading = true)
 
         axios.post('api/files/downloadFile',{
             userId,
@@ -81,20 +102,24 @@ const FileCloud = ({t}) => {
                 document.body.appendChild(link)
                 link.click()
                 link.remove()
+                setLoading(loading = false)
             })
     }
 
     const deleteFile = (id) => {
+        setLoading(loading = true)
         axios.post('api/files/removeFile', {
             userId,
             id
         })
             .then(res => {
                 getFiles()
+                setLoading(loading = false)
             })
     }
 
     const changeSort = (sort) => {
+        setLoading(loading = true)
         axios.get('/api/files/get', {
             params: {
                 userId,
@@ -103,16 +128,22 @@ const FileCloud = ({t}) => {
         })
             .then(res => {
                 setDirFiles(dirFiles = res.data.files)
+                setLoading(loading = false)
+            })
+            .catch(err => {
+                console.log(err)
             })
     }
 
     const shareBook = (id) => {
+        setLoading(loading = true)
         axios.post('/api/files/share', {
             userId,
             id
         })
             .then(res => {
                 navigator.clipboard.writeText(res.data.link)
+                setLoading(loading = false)
             })
     }
 
@@ -134,43 +165,54 @@ const FileCloud = ({t}) => {
 
     return (
         <div className="FileCloud">
+            <h4>У цьому розділі ви маєте можливість завантажити у свій особистий кабінет книги, які після цього Ви зможете скачувати, видаляти, зберігати, сортувати за багатьма параметрами, і навіть ділитись за допомогою посилання книгами двох форматів .txt та .pdf зі своїми друзями.</h4>
+
+                {visibleFilteredBooks.length > 0 ? <div>
+                    <p style={{'marginBottom': '0'}}>У вас зайнято {+space.toFixed(1)} МБ із 500 МБ</p>
+                    <ProgressBar style={{'width': '100%', 'marginBottom': '1rem'}} animated now={+space.toFixed(1) / 5} />
+                </div> : ''}
+
             <Form.Group controlId="formFile" className="mb-3">
                 <Form.Label>Виберіть книгу, яку хочете завантажити у файлову хмару:</Form.Label>
-                <Form.Control id="file" onChange={UploadContent} type="file" />
+                <Form.Control id="file" onChange={UploadContent} type="file" accept=".pdf, .doc, .docx, .fb2, .epub, .mobi, .txt, .djvu" />
                 {errorEnterBook ? <p style={{'color': 'red', 'marginBottom': '0'}}>{errorEnterBook}</p> : ''}
                 <Button style={{'backgroundColor': 'black', 'border': 'none', 'marginTop': '10px'}} onClick={(event) => uploadFile(event)} variant="primary">
                     Завантажити книгу
                 </Button>
             </Form.Group>
-            <Form style={{'marginTop': '1rem', 'marginBottom': '2rem'}}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Control className="book-names" onChange={() => addTerm()} type="text" placeholder={t('enter-book-name-for-search')} />
-                </Form.Group>
-            </Form>
-            <div className='sorting'>
-                <h5>Щоб скористатись сортування натисніть на відповідну іконку</h5>
-                <div className='other-sort'>
-                    <p>Сортування по імені</p>
-                    <div>
-                        <AiOutlineSortAscending onClick={() => changeSort('name1')}/>
-                        <AiOutlineSortDescending onClick={() => changeSort('name-1')}/>
+            {visibleFilteredBooks.length > 0 ?
+                <div>
+                    <Form style={{'marginTop': '1rem', 'marginBottom': '2rem'}}>
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control className="book-names" onChange={() => addTerm()} type="text" placeholder={t('enter-book-name-for-search')} />
+                        </Form.Group>
+                    </Form>
+
+                <div className='sorting'>
+                    <h5>Щоб скористатись сортування натисніть на відповідну іконку</h5>
+                    <div className='other-sort'>
+                        <p>Сортування по імені</p>
+                        <div>
+                            <AiOutlineSortAscending onClick={() => changeSort('name1')}/>
+                            <AiOutlineSortDescending onClick={() => changeSort('name-1')}/>
+                        </div>
                     </div>
-                </div>
-                <div className='other-sort'>
-                    <p>Сортування по даті додавання</p>
-                    <div>
-                        <BsSortNumericDownAlt onClick={() => changeSort('date-1')}/>
-                        <BsSortNumericUpAlt onClick={() => changeSort('date1')}/>
+                    <div className='other-sort'>
+                        <p>Сортування по даті додавання</p>
+                        <div>
+                            <BsSortNumericDownAlt onClick={() => changeSort('date-1')}/>
+                            <BsSortNumericUpAlt onClick={() => changeSort('date1')}/>
+                        </div>
                     </div>
-                </div>
-                <div className='other-sort'>
-                    <p>Сортування по розміру</p>
-                    <div>
-                        <BsSortNumericDownAlt onClick={() => changeSort('size-1')}/>
-                        <BsSortNumericUpAlt onClick={() => changeSort('size1')}/>
+                    <div className='other-sort'>
+                        <p>Сортування по розміру</p>
+                        <div>
+                            <BsSortNumericDownAlt onClick={() => changeSort('size-1')}/>
+                            <BsSortNumericUpAlt onClick={() => changeSort('size1')}/>
+                        </div>
                     </div>
-                </div>
-            </div>
+                    </div>
+                </div> : ''}
             {visibleFilteredBooks.length > 0 ?
                  <Table striped bordered hover variant="dark" style={{'marginTop': '1rem'}}>
                 <thead>
@@ -186,12 +228,13 @@ const FileCloud = ({t}) => {
                 {visibleFilteredBooks.map(val => {
                     return <tr key={val._id}>
                         <td>{dirFiles.indexOf(val) + 1}</td>
-                        <td>{val.type === 'image/jpeg' ?
-                            <MdInsertPhoto/> : false}</td>
+                        <td>
+                            {val.type === 'text/plain' || val.type === 'application/pdf' ? <MdMenuBook /> : <BsBook />}
+                        </td>
                         <td>
                             {val.name}
                             <span style={{'float': 'right'}}>
-                                <FiShare2 className='share-ic' onClick={() => shareBook(val._id)}/>
+                                {val.type === 'text/plain' || val.type === 'application/pdf' ? <FiShare2 className='share-ic' onClick={() => shareBook(val._id)}/> : ''}
                                 <FaFileDownload onClick={(e) => downloadFile(e, val)} className='download-icon'/>
                                 <FiTrash2 onClick={() => deleteFile(val._id)} className='remove-icon'/>
                             </span>
@@ -203,6 +246,7 @@ const FileCloud = ({t}) => {
                 </tbody>
             </Table> : ''
             }
+            {loading ? <Loader /> : null}
         </div>
     )
 }

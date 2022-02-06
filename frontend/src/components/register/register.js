@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import './register.scss'
 import axios from 'axios'
 import {Form, Button} from "react-bootstrap"
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
+import Loader from '../../Loader'
 import { withNamespaces } from 'react-i18next';
 
 const Register = ({t}) => {
@@ -11,15 +14,15 @@ const Register = ({t}) => {
         fullName: '',
         passwordConfirm: ''
     })
-
     let [rightRegister, setRegister] = useState(false)
-
+    let [loading, setLoading] = React.useState(false);
     let [errors, setErrors] = useState([])
 
 
     // Надсилання даних Реєстрації
     const sendDataRegister = async() => {
         try {
+            setLoading(loading = true)
             setForm(form = {
                 email: document.querySelector('#email-register').value,
                 password:  document.querySelector('#password-register').value,
@@ -43,11 +46,14 @@ const Register = ({t}) => {
                         setErrors(errors = [])
                         setRegister(rightRegister = true)
 
+                        NotificationManager.success(t('acc-ready'), t('operation-good'));
+
                         document.querySelector('#email-register').value = ''
                         document.querySelector('#password-register').value = ''
                         document.querySelector('#fullName-register').value = ''
                         document.querySelector('#password2-register').value = ''
                    }
+                    setLoading(loading = false)
                 })
         } catch (err) {
             console.log(err)
@@ -85,18 +91,18 @@ const Register = ({t}) => {
                  </Form.Group>
 
                  {rightRegister
-                     ? <div className="rightRegister">
-                         <p>{t('The user has been successfully registered, now you can use a personal cabinet.')}</p>
+                     ? <div>
+                         <p style={{'color': 'green'}}>{t('The user has been successfully registered, now you can use a personal cabinet.')}</p>
                      </div>
                      :
                      false
                  }
 
                  {errors.length > 0
-                     ? <div className="falseRegister">
+                     ? <div>
                          {
                              errors.map(val => {
-                                 return <p>{t(val.msg)}.</p>
+                                 return <p style={{'color': 'red'}}>{t(val.msg)}.</p>
                              })
                          }
                      </div>
@@ -111,6 +117,8 @@ const Register = ({t}) => {
                     <Button href="/login" variant="secondary" type="submit">{t('after-ref')}</Button>
                 </div>
             </Form>
+            <NotificationContainer />
+            {loading ? <Loader /> : null}
         </div>
     );
 };

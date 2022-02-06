@@ -7,10 +7,7 @@ const schema = new Schema({
     fullName: {type: String, required: true},
     password: {type: String, required: true},
     passwordConfirm: {type: String, required: true},
-    books: [{type: Types.ObjectId, ref: 'Books'}],
-    diskSpace: {type: Number, default: 1024**3*10},
-    usedSpace: {type: Number, default: 0},
-    files: [{type: Types.ObjectId, ref: 'File'}]
+    tokenReset: {type: Number}
 })
 
 module.exports = model('User', schema)

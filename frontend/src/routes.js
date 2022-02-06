@@ -8,6 +8,7 @@ import Features from "./components/features/features";
 import About from "./components/about/about";
 import FileCloud from "./components/filecloud/filecloud"
 import ListOfBooks from "./components/list-of-books/list-of-books";
+import ResetPassword from './components/resetPassword/resetPassword'
 
 
 // Оприділяємо по змінній isLogin, які сторінки показувати, чи лендінг чи особистий кабінет
@@ -27,6 +28,7 @@ export const useRoutes = (isLogin) => {
                 <Route path="/about" exact element={<About />} />
                 <Route path="/login" exact element={<Auth />}/>
                 <Route path='/register' exact element={ <Register />} />
+                <Route path='/resetPassword' exact element={ <ResetPassword />} />
             </Routes>
         )
     }

@@ -162,12 +162,15 @@ const ListOfBooks = ({t}) => {
                 </Button>
             </Form>
             {error ? <p style={{'color': 'red'}}>{t(error)}</p> : ''}
-            <h5>{t('list-book')}</h5>
-            <Form style={{'marginTop': '1rem', 'marginBottom': '2rem'}}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Control className="book-name" onChange={() => addTerm()} type="text" placeholder={t('enter-book-name-for-search')} />
-                </Form.Group>
-            </Form>
+            {visibleFilteredBooks.length > 0 ?
+                <div>
+                    <h5>{t('list-book')}</h5>
+                    <Form style={{'marginTop': '1rem', 'marginBottom': '2rem'}}>
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control className="book-name" onChange={() => addTerm()} type="text" placeholder={t('enter-book-name-for-search')} />
+                        </Form.Group>
+                    </Form>
+                </div> : ''}
             <ListGroup>
                 {visibleFilteredBooks.map(val => {
                     return <ListGroup.Item key={val.id}>
