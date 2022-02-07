@@ -1,11 +1,11 @@
 import React, {useContext, useEffect} from 'react';
 import uuid from 'react-uuid';
 import axios from 'axios';
-import {Form, Button, ListGroup} from 'react-bootstrap';
+import {Button, Form, ListGroup} from 'react-bootstrap';
 import './list-of-books.scss';
 import {BsCheckAll, BsFillFlagFill, BsTrash} from 'react-icons/bs';
 import {AuthContext} from "../../context/AuthContext";
-import { withNamespaces } from 'react-i18next';
+import {withNamespaces} from 'react-i18next';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import Loader from '../../Loader'
@@ -14,7 +14,7 @@ const ListOfBooks = ({t}) => {
     useEffect(() => {
         getBooks()
         //eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    }, [])
 
     const {userId} = useContext(AuthContext)
     let [error, setError] = React.useState('')
@@ -72,7 +72,7 @@ const ListOfBooks = ({t}) => {
             setError(error = 'enter-correctly-name-book')
         }
     }
-    
+
     const deleteBook = (bookId) => {
         setLoading(loading = true)
         axios.post('/api/books/delete', {
@@ -154,10 +154,10 @@ const ListOfBooks = ({t}) => {
             <h5>{t('add-book')}</h5>
             <Form>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Control type="text" placeholder={t('enter-book-name')} />
+                    <Form.Control type="text" placeholder={t('enter-book-name')}/>
                 </Form.Group>
 
-                <Button onClick={addBook} variant="primary">
+                <Button style={{border: 'none', outline: 'none'}} onClick={addBook} variant="primary">
                     {t('add')}
                 </Button>
             </Form>
@@ -167,24 +167,26 @@ const ListOfBooks = ({t}) => {
                     <h5>{t('list-book')}</h5>
                     <Form style={{'marginTop': '1rem', 'marginBottom': '2rem'}}>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Control className="book-name" onChange={() => addTerm()} type="text" placeholder={t('enter-book-name-for-search')} />
+                            <Form.Control className="book-name" onChange={() => addTerm()} type="text"
+                                          placeholder={t('enter-book-name-for-search')}/>
                         </Form.Group>
                     </Form>
                 </div> : ''}
             <ListGroup>
                 {visibleFilteredBooks.map(val => {
                     return <ListGroup.Item key={val.id}>
-                        <span className={val.completed ? 'list-group-item-completed' : val.important ? 'list-group-item-important' : ''}>{val.text}</span>
+                        <span
+                            className={val.completed ? 'list-group-item-completed' : val.important ? 'list-group-item-important' : ''}>{val.text}</span>
                         <span className="list-group-item-icons">
-                            <BsFillFlagFill onClick={() => changeBookImportant(val.id, val.important, val.completed)} />
-                            <BsCheckAll onClick={() => changeBookCompleted(val.id, val.completed)} />
-                            <BsTrash onClick={() => deleteBook(val.id)} />
+                            <BsFillFlagFill onClick={() => changeBookImportant(val.id, val.important, val.completed)}/>
+                            <BsCheckAll onClick={() => changeBookCompleted(val.id, val.completed)}/>
+                            <BsTrash onClick={() => deleteBook(val.id)}/>
                         </span>
                     </ListGroup.Item>
                 })}
             </ListGroup>
-            <NotificationContainer />
-            {loading ? <Loader /> : null}
+            <NotificationContainer/>
+            {loading ? <Loader/> : null}
         </div>
     );
 };

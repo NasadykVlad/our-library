@@ -47,25 +47,32 @@ class FileController {
 
     async uploadFile(req, res) {
         try {
-            const {userId} = req.query
-            if (req.files.file) {
-                const file = req.files.file
+            const {userId, name} = req.query
 
-                const fileOwnerPath = `D:\\Programming\\WEB_UI_PROGRAMMING\\Project\\our-library\\backend\\files\\${userId}`
-                const filePath = `D:\\Programming\\WEB_UI_PROGRAMMING\\Project\\our-library\\backend\\files\\${userId}\\${file.name}`
+            let book = await File.findOne({userId, name})
 
-                fs.mkdirSync(fileOwnerPath, { recursive: true })
-                file.mv(filePath)
+            if (!book) {
+                if (req.files.file) {
+                    const file = req.files.file
 
-                const dbFile = new File({
-                    name: file.name,
-                    type: file.mimetype,
-                    size: file.size,
-                    owner: userId
-                })
+                    const fileOwnerPath = `D:\\Programming\\WEB_UI_PROGRAMMING\\Project\\our-library\\backend\\files\\${userId}`
+                    const filePath = `D:\\Programming\\WEB_UI_PROGRAMMING\\Project\\our-library\\backend\\files\\${userId}\\${file.name}`
 
-                await dbFile.save()
-                res.json(dbFile)
+                    fs.mkdirSync(fileOwnerPath, { recursive: true })
+                    file.mv(filePath)
+
+                    const dbFile = new File({
+                        name: file.name,
+                        type: file.mimetype,
+                        size: file.size,
+                        owner: userId
+                    })
+
+                    await dbFile.save()
+                    res.json(dbFile)
+                }
+            } else {
+                res.json({error: 'book-is-already-exists'})
             }
         } catch (e) {
             console.log(e)

@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from 'react';
 import './account.scss'
-import {Card, Button, Form} from 'react-bootstrap'
-import { withNamespaces } from 'react-i18next'
+import {Button, Card, Form} from 'react-bootstrap'
+import {withNamespaces} from 'react-i18next'
 import {AuthContext} from "../../context/AuthContext";
 import axios from "axios";
 import Loader from '../../Loader'
@@ -13,13 +13,13 @@ const Account = ({t}) => {
     const {userId} = useContext(AuthContext)
     let [user, setUser] = React.useState('')
     let [errorName, setErrorName] = React.useState('')
-    let [errors, setErrors] = React.useState([])
+    let [errors, setErrors] = React.useState('')
     let [loading, setLoading] = React.useState(false);
 
     useEffect(() => {
         getAccountInformation()
         //eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    }, [])
 
     const getAccountInformation = () => {
         setLoading(loading = true)
@@ -69,7 +69,7 @@ const Account = ({t}) => {
                 if (res.data.message === 'ok') {
                     document.querySelector('#old-password').value = ''
                     document.querySelector('#new-password').value = ''
-                    setErrors(errors = [])
+                    setErrors(errors = '')
                     NotificationManager.success(t('you-change-pass'), t('operation-good'));
                 } else {
                     setErrors(errors = res.data.errors)
@@ -88,7 +88,7 @@ const Account = ({t}) => {
                         {t('when-change-name')}
                     </Card.Text>
                     <Card.Text>
-                        <Form.Control id="fullName" type="email" placeholder={t('enter-name-correct')} />
+                        <Form.Control id="fullName" type="email" placeholder={t('enter-name-correct')}/>
                     </Card.Text>
                     {errorName ? <p style={{'color': 'red'}}>{errorName}</p> : ''}
                     <Button onClick={() => changeUserName()} variant="primary">{t('change')}</Button>
@@ -102,19 +102,19 @@ const Account = ({t}) => {
                         {t('change-pass')}
                     </Card.Text>
                     <Card.Text>
-                        <Form.Control id="old-password" type="email" placeholder={t('input-old')} />
+                        <Form.Control id="old-password" type="password" placeholder={t('input-old')}/>
                     </Card.Text>
                     <Card.Text>
-                        <Form.Control id="new-password" type="email" placeholder={t('input-new')} />
+                        <Form.Control id="new-password" type="password" placeholder={t('input-new')}/>
                     </Card.Text>
-                    {errors.length > 0 ? errors.map(err => {
+                    {errors ? errors.map(err => {
                         return <p style={{'color': 'red'}}>{t(err.msg)}</p>
                     }) : ''}
                     <Button onClick={() => changeUserPassword()} variant="primary">{t('сhange-password')}</Button>
                 </Card.Body>
             </Card>
-            <NotificationContainer />
-            {loading ? <Loader /> : null}
+            <NotificationContainer/>
+            {loading ? <Loader/> : null}
         </div>
     );
 };

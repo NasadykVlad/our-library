@@ -126,5 +126,6 @@
   "when-change-name": "Щоб змінити ім'я, введіть його нижче",
   "an-incorrect-old-password": "Неправильно вказаний старий пароль",
   "an-incorrect-new-password": "Неправильно вказаний новий пароль",
-  "enter-name-correct": "Введіть ім'я"
+  "enter-name-correct": "Введіть ім'я",
+  "book-is-already-exists": "Ця книга вже завантажена"
 }

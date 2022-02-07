@@ -1,10 +1,9 @@
 import React from 'react';
 import './about.scss'
-import {Card, Modal, Button} from 'react-bootstrap'
-import { withNamespaces } from 'react-i18next';
+import {Button, Card, Modal} from 'react-bootstrap'
+import {withNamespaces} from 'react-i18next';
 
 const About = ({t}) => {
-
     const [modalShow, setModalShow] = React.useState(false);
 
     function MyVerticallyCenteredModal(props) {

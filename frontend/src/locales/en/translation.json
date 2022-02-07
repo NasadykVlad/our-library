@@ -126,5 +126,6 @@
   "when-change-name": "To change the name, enter it below",
   "an-incorrect-old-password": "The old password is incorrect",
   "an-incorrect-new-password": "The new password is incorrect",
-  "enter-name-correct": "Enter a name"
+  "enter-name-correct": "Enter a name",
+  "book-is-already-exists": "This book has already been downloaded"
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Routes, Route} from 'react-router-dom'
+import {Route, Routes} from 'react-router-dom'
 import Auth from './components/auth/auth'
 import Register from "./components/register/register";
 import Landing from "./components/landing/landing";
@@ -11,25 +11,25 @@ import ResetPassword from './components/resetPassword/resetPassword'
 import Account from "./components/account/account";
 
 
-// Оприділяємо по змінній isLogin, які сторінки показувати, чи лендінг чи особистий кабінет
 export const useRoutes = (isLogin) => {
     if (isLogin) {
         return (
             <Routes>
-                <Route path="/" exact element={<ListOfBooks />} />
-                <Route path="/list-of-books" exact element={<ListOfBooks />} />
-                <Route path="/filecloud" exact element={<FileCloud />} />
-                <Route path="/account" exact element={<Account />} />
+                <Route path="/" exact element={<ListOfBooks/>}/>
+                <Route path="/list-of-books" exact element={<ListOfBooks/>}/>
+                <Route path="/filecloud" exact element={<FileCloud/>}/>
+                <Route path="/account" exact element={<Account/>}/>
             </Routes>
-        )} else {
+        )
+    } else {
         return (
             <Routes>
-                <Route path="/" exact element={<Landing />}/>
-                <Route path="/features" exact element={<Features />} />
-                <Route path="/about" exact element={<About />} />
-                <Route path="/login" exact element={<Auth />}/>
-                <Route path='/register' exact element={ <Register />} />
-                <Route path='/resetPassword' exact element={ <ResetPassword />} />
+                <Route path="/" exact element={<Landing/>}/>
+                <Route path="/features" exact element={<Features/>}/>
+                <Route path="/about" exact element={<About/>}/>
+                <Route path="/login" exact element={<Auth/>}/>
+                <Route path='/register' exact element={<Register/>}/>
+                <Route path='/resetPassword' exact element={<ResetPassword/>}/>
             </Routes>
         )
     }

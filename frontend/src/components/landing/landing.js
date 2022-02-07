@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Carousel} from 'react-bootstrap';
-import { withNamespaces } from 'react-i18next';
+import {withNamespaces} from 'react-i18next';
 import './landing.scss'
 
 const Landing = ({t}) => {

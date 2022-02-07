@@ -2,18 +2,23 @@
   background-color: #F4F9E2;
   min-height: 100vh;
   padding: 2rem;
+
   & h1, .last-news {
     text-align: center;
   }
+
   & .accordion {
     margin: 0 2rem;
   }
+
   & .card-group {
     margin: 0 2rem;
   }
+
   & .last-news {
     margin-top: 2rem;
   }
+
   & .accordion-button:not(.collapsed) {
     color: black;
     font-weight: 600;

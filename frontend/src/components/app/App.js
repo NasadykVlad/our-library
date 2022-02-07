@@ -12,16 +12,16 @@ function App() {
     const routes = useRoutes(isLogin);
 
 
-  return (
-      <AuthContext.Provider value={{login, logout, token, userId, isReady, isLogin}}>
-          <div className="App">
-              <BrowserRouter>
-                  <NavBar />
-                  {routes}
-              </BrowserRouter>
-          </div>
-      </AuthContext.Provider>
-  );
+    return (
+        <AuthContext.Provider value={{login, logout, token, userId, isReady, isLogin}}>
+            <div className="App">
+                <BrowserRouter>
+                    <NavBar/>
+                    {routes}
+                </BrowserRouter>
+            </div>
+        </AuthContext.Provider>
+    );
 }
 
 export default App;

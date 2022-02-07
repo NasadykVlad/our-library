@@ -1,7 +1,7 @@
 import React from 'react';
-import {Accordion, ListGroup, CardGroup, Card} from 'react-bootstrap'
+import {Accordion, Card, CardGroup, ListGroup} from 'react-bootstrap'
 import './features.scss'
-import { withNamespaces } from 'react-i18next';
+import {withNamespaces} from 'react-i18next';
 
 const Features = ({t}) => {
     return (
@@ -32,7 +32,7 @@ const Features = ({t}) => {
                 </Accordion.Item>
             </Accordion>
 
-            <h2 class="last-news">{t('last-news')}</h2>
+            <h2 className="last-news">{t('last-news')}</h2>
 
             <CardGroup>
                 <Card>

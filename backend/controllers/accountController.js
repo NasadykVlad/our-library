@@ -1,15 +1,13 @@
 const User = require('../models/User')
 const {validationResult} = require("express-validator");
 const bcrypter = require("bcryptjs");
-const jwtToken = require("jsonwebtoken");
 
-class FileController {
-
+class accountController {
     async getAccountInformation(req, res) {
         try {
             const {userId} = req.query
 
-            const user = await User.findOne({userId})
+            const user = await User.findOne({_id: userId})
 
             if (user) {
                 res.json({
@@ -27,7 +25,7 @@ class FileController {
         try {
             const {userId, fullName} = req.body
 
-            const user = await User.findOne({userId})
+            const user = await User.findOne({_id: userId})
 
             if (user) {
                 user.fullName = fullName
@@ -55,7 +53,7 @@ class FileController {
                 })
             }
 
-            const user = await User.findOne({userId})
+            const user = await User.findOne({_id: userId})
 
             if (user) {
                 const checkPass = bcrypter.compareSync(oldPassword, user.password)
@@ -82,4 +80,4 @@ class FileController {
 
 }
 
-module.exports = new FileController()
+module.exports = new accountController()

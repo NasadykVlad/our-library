@@ -2,48 +2,59 @@
   background-color: #F4F9E2;
   min-height: 100vh;
   padding: 2rem;
+
   & h5 {
     margin-top: 2rem;
   }
+
   form {
     display: flex;
     width: 100%;
     justify-content: space-between;
     align-items: center;
     margin-top: 1rem;
+
     & .mb-3 {
       width: 100%;
-      margin-bottom: 0!important;
+      margin-bottom: 0 !important;
     }
+
     & .btn {
       background-color: black;
       margin-left: 25px;
     }
   }
+
   & .list-group {
     &-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       & span svg {
         font-size: 20px;
+
         &:hover {
           font-size: 25px;
           transition: .2s;
         }
       }
+
       &-completed {
         opacity: 0.7;
         text-decoration: line-through;
       }
+
       &-important {
         font-weight: 500;
         color: red;
         text-transform: uppercase;
       }
     }
+
     &-item-icons {
       display: flex;
+
       & svg:nth-child(2) {
         margin: 0 7px;
       }

@@ -20,7 +20,6 @@ const Auth = ({t}) => {
 
     const {login} = useContext(AuthContext)
 
-    // Надсилання даних Входу
     const sendDataLogin = () => {
         setLoading(loading = true)
         setForm(form = {
@@ -98,11 +97,12 @@ const Auth = ({t}) => {
                             style={{backgroundColor: 'black', border: 'none', marginRight: '20px'}}>
                         {t('enter')}
                     </Button>
-                    <Button href="/register" variant="secondary" style={{marginRight: '20px'}} type="submit">{t('you-dont-register?')}</Button>
+                    <Button href="/register" variant="secondary" style={{marginRight: '20px'}}
+                            type="submit">{t('you-dont-register?')}</Button>
                     <Button href="/resetPassword" variant="secondary" type="submit">{t('recove-acc')}</Button>
                 </div>
             </Form>
-            {loading ? <Loader /> : null}
+            {loading ? <Loader/> : null}
         </div>
     );
 };

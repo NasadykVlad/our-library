@@ -5,7 +5,6 @@ export const useAuth = () => {
     let [userId, setUserId] = useState(null)
     let [isReady, setIsReady] = useState(false)
 
-    // Добавляємо в localStorage на зберігання сесію при успішному вході
     const login = (jwtToken, id) => {
         setToken(token = jwtToken)
         setUserId(userId = id)
@@ -15,14 +14,12 @@ export const useAuth = () => {
         }))
     }
 
-    // Видаляємо з localStorage сесію при виході
     const logout = () => {
         setToken(token = null)
         setUserId(userId = null)
         localStorage.removeItem('userData')
     }
 
-    // При запуску програми перевіряємо чи користувач уже входив раніше, щоб відновити сесію
     useEffect(() => {
         const data = JSON.parse(localStorage.getItem('userData'))
         if (data && data.token) {
