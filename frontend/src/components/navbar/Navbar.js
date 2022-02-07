@@ -1,6 +1,7 @@
 import React, {useContext} from 'react'
 import {Container, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import './navbar.scss'
+import {Link} from 'react-router-dom'
 import {AuthContext} from "../../context/AuthContext";
 import {withNamespaces} from 'react-i18next';
 import i18n from "../../i18n";
@@ -10,6 +11,12 @@ function NavBar({t}) {
 
     const logOut = () => {
         localStorage.removeItem('userData')
+
+        const link = document.createElement('a')
+                link.href = 'http://localhost:3000/'
+                link.click()
+                link.remove()
+
         return true
     }
 
@@ -25,17 +32,17 @@ function NavBar({t}) {
         <>
             <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
                 <Container>
-                    <Navbar.Brand href="/">{t('ourLibrary')}</Navbar.Brand>
+                    <Link className="navbar-brand" to="/">{t('ourLibrary')}</Link>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
                     <Navbar.Collapse id="responsive-navbar-nav">
                         {
                             isLogin ? <Nav className="me-auto">
-                                <Nav.Link href="/list-of-books">{t('your-books')}</Nav.Link>
-                                <Nav.Link href="/filecloud">{t('file-cloud')}</Nav.Link>
-                                <Nav.Link href="/account">{t('account-settings')}</Nav.Link>
+                                <Link className="nav-link" to="/list-of-books">{t('your-books')}</Link>
+                                <Link className="nav-link" to="/filecloud">{t('file-cloud')}</Link>
+                                <Link className="nav-link" to="/account">{t('account-settings')}</Link>
                             </Nav> : <Nav className="me-auto">
-                                <Nav.Link href="/features">{t('news')}</Nav.Link>
-                                <Nav.Link href="/about">{t('about')}</Nav.Link>
+                                <Link className="nav-link" to="/features">{t('news')}</Link>
+                                <Link className="nav-link" to="/about">{t('about')}</Link>
                             </Nav>
                         }
                         <NavDropdown title={t('lang')} className="navbar-dark navbar-nav nav-link"
@@ -48,13 +55,13 @@ function NavBar({t}) {
                         {
                             isLogin ? <Nav>
                                     <Nav>
-                                        <Nav.Link onClick={() => logOut()} href="/">{t('exit')}</Nav.Link>
+                                        <Link className="nav-link" onClick={() => logOut()} to="/">{t('exit')}</Link>
                                     </Nav>
                                 </Nav> :
                                 <Nav>
                                     <Nav>
-                                        <Nav.Link href="/register">{t('register')}</Nav.Link>
-                                        <Nav.Link href="/login">{t('login')}</Nav.Link>
+                                        <Link className="nav-link" to="/register">{t('register')}</Link>
+                                        <Link className="nav-link" to="/login">{t('login')}</Link>
                                     </Nav>
                                 </Nav>
                         }

@@ -4,6 +4,7 @@ import axios from 'axios'
 import {Button, Form} from "react-bootstrap"
 import {AuthContext} from "../../context/AuthContext";
 import Loader from '../../Loader'
+import {Link} from 'react-router-dom'
 import {withNamespaces} from 'react-i18next';
 
 
@@ -97,9 +98,9 @@ const Auth = ({t}) => {
                             style={{backgroundColor: 'black', border: 'none', marginRight: '20px'}}>
                         {t('enter')}
                     </Button>
-                    <Button href="/register" variant="secondary" style={{marginRight: '20px'}}
-                            type="submit">{t('you-dont-register?')}</Button>
-                    <Button href="/resetPassword" variant="secondary" type="submit">{t('recove-acc')}</Button>
+                    <Link to="/register" className="btn btn-secondary" variant="secondary" style={{marginRight: '20px'}}
+                            type="submit">{t('you-dont-register?')}</Link>
+                    <Link to="/resetPassword" className="btn btn-secondary" variant="secondary" type="submit">{t('recove-acc')}</Link>
                 </div>
             </Form>
             {loading ? <Loader/> : null}

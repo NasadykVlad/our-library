@@ -5,6 +5,7 @@ import {Button, Form} from "react-bootstrap"
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import Loader from '../../Loader'
+import {Link} from 'react-router-dom'
 import {withNamespaces} from 'react-i18next';
 
 const Register = ({t}) => {
@@ -115,7 +116,7 @@ const Register = ({t}) => {
                             style={{backgroundColor: 'black', border: 'none', marginRight: '20px'}}>
                         {t('reg')}
                     </Button>
-                    <Button href="/login" variant="secondary" type="submit">{t('after-ref')}</Button>
+                    <Link to="/login" className="btn btn-secondary" variant="secondary" type="submit">{t('after-ref')}</Link>
                 </div>
             </Form>
             <NotificationContainer/>
