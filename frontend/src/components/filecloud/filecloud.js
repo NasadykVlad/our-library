@@ -14,7 +14,7 @@ import 'react-notifications/lib/notifications.css';
 import Loader from '../../Loader'
 
 const FileCloud = ({t}) => {
-    const {userId} = useContext(AuthContext)
+    const {token} = useContext(AuthContext)
 
     let [dirFiles, setDirFiles] = React.useState([])
     let [file, setFile] = React.useState();
@@ -32,8 +32,8 @@ const FileCloud = ({t}) => {
         setLoading(loading = true)
 
         axios.get('/api/files/get', {
-            params: {
-                userId
+            headers: {
+                Authorization: token
             }
         })
             .then(res => {
@@ -72,8 +72,10 @@ const FileCloud = ({t}) => {
 
                 axios.post('api/files/upload', formData, {
                     params: {
-                        userId,
-                        name: file.name
+                        name: file.name,
+                    },
+                    headers: {
+                        Authorization: token
                     }
                 })
                     .then(res => {
@@ -99,9 +101,11 @@ const FileCloud = ({t}) => {
         setLoading(loading = true)
 
         axios.post('api/files/downloadFile', {
-            userId,
             id: file._id
         }, {
+            headers: {
+                Authorization: token
+            },
             responseType: 'blob'
         })
             .then(res => {
@@ -120,8 +124,11 @@ const FileCloud = ({t}) => {
     const deleteFile = (id) => {
         setLoading(loading = true)
         axios.post('api/files/removeFile', {
-            userId,
             id
+        }, {
+            headers: {
+                Authorization: token
+            }
         })
             .then(res => {
                 getFiles()
@@ -134,8 +141,10 @@ const FileCloud = ({t}) => {
         setLoading(loading = true)
         axios.get('/api/files/get', {
             params: {
-                userId,
                 sort
+            },
+            headers: {
+                Authorization: token
             }
         })
             .then(res => {
@@ -151,8 +160,11 @@ const FileCloud = ({t}) => {
     const shareBook = (id) => {
         setLoading(loading = true)
         axios.post('/api/files/share', {
-            userId,
             id
+        }, {
+            headers: {
+                Authorization: token
+            }
         })
             .then(res => {
                 navigator.clipboard.writeText(res.data.link)

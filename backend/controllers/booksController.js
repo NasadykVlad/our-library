@@ -1,9 +1,11 @@
 const Books = require('../models/Books')
+const getUserId = require('../middleware/getUserId.middleware')
 
 class BooksController {
     async addBook(req, res) {
         try {
-            const {text, id, userId} = req.body
+            const {text, id} = req.body
+            const userId = getUserId(req.headers.authorization)
 
             const book = await new Books({
                 text,
@@ -22,7 +24,7 @@ class BooksController {
 
     async getBooks(req, res) {
         try {
-            const {userId} = req.query
+            const userId = getUserId(req.headers.authorization)
 
             const booksAllInfo = await Books.find({owner: userId})
 
@@ -45,7 +47,8 @@ class BooksController {
 
     async deleteBook(req, res) {
         try {
-            const {userId, bookId} = req.body
+            const {bookId} = req.body
+            const userId = getUserId(req.headers.authorization)
 
             await Books.deleteOne({id: bookId, userId})
 
@@ -59,7 +62,8 @@ class BooksController {
 
     async completedBook(req, res) {
         try {
-            const {userId, bookId, completed} = req.body
+            const {bookId, completed} = req.body
+            const userId = getUserId(req.headers.authorization)
 
             await Books.findOneAndUpdate({id: bookId, userId}, {completed: !completed})
 
@@ -74,7 +78,8 @@ class BooksController {
 
     async importantBook(req, res) {
         try {
-            const {userId, bookId, important, completed} = req.body
+            const {bookId, important, completed} = req.body
+            const userId = getUserId(req.headers.authorization)
 
             if (completed === false) {
                 await Books.findOneAndUpdate({id: bookId, userId}, {important: !important})

@@ -1,6 +1,6 @@
 import React from 'react'
 import {Route, Routes} from 'react-router-dom'
-import Auth from './components/auth/auth'
+import Auth from './components/auth/Auth'
 import Register from "./components/register/register";
 import Landing from "./components/landing/landing";
 import Features from "./components/features/features";

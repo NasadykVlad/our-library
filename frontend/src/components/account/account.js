@@ -10,7 +10,7 @@ import 'react-notifications/lib/notifications.css';
 
 const Account = ({t}) => {
 
-    const {userId} = useContext(AuthContext)
+    const {token} = useContext(AuthContext)
     let [user, setUser] = React.useState('')
     let [errorName, setErrorName] = React.useState('')
     let [errors, setErrors] = React.useState('')
@@ -24,8 +24,8 @@ const Account = ({t}) => {
     const getAccountInformation = () => {
         setLoading(loading = true)
         axios.get('/api/account/get', {
-            params: {
-                userId
+            headers: {
+                Authorization: token
             }
         })
             .then(res => {
@@ -40,8 +40,11 @@ const Account = ({t}) => {
         if (fullName.length > 3) {
             setLoading(loading = true)
             axios.post('/api/account/changeName', {
-                userId,
                 fullName
+            }, {
+                headers: {
+                    Authorization: token
+                }
             })
                 .then(res => {
                     getAccountInformation()
@@ -61,9 +64,12 @@ const Account = ({t}) => {
         const newPassword = document.querySelector('#new-password').value
 
         axios.post('/api/account/changePassword', {
-            userId,
             oldPassword,
             newPassword
+        }, {
+            headers: {
+                Authorization: token
+            }
         })
             .then(res => {
                 if (res.data.message === 'ok') {

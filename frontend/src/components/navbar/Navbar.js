@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
 import {Container, Nav, Navbar, NavDropdown} from "react-bootstrap";
-import './navbar.scss'
+import './Navbar.scss'
 import {Link} from 'react-router-dom'
 import {AuthContext} from "../../context/AuthContext";
 import {withNamespaces} from 'react-i18next';

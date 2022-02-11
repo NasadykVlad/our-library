@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react'
-import './auth.scss'
+import './Auth.scss'
 import axios from 'axios'
 import {Button, Form} from "react-bootstrap"
 import {AuthContext} from "../../context/AuthContext";
@@ -34,9 +34,9 @@ const Auth = ({t}) => {
             }
         })
             .then(res => {
-                if (res.data.token && res.data.userId) {
+                if (res.data.token) {
 
-                    login(res.data.token, res.data.userId)
+                    login(res.data.token)
 
                     setErrors(errors = [])
                     setLogin(rightLogin = true)

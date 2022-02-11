@@ -16,7 +16,7 @@ const ListOfBooks = ({t}) => {
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const {userId} = useContext(AuthContext)
+    const {token} = useContext(AuthContext)
     let [error, setError] = React.useState('')
     let [books, setBooks] = React.useState([])
     let [term, changeTerm] = React.useState('');
@@ -27,10 +27,7 @@ const ListOfBooks = ({t}) => {
         try {
             axios.get('/api/books/get', {
                 headers: {
-                    'Content-Type': 'application/json'
-                },
-                params: {
-                    userId
+                    Authorization: token
                 }
             })
                 .then(res => {
@@ -50,11 +47,10 @@ const ListOfBooks = ({t}) => {
             setError(error = '')
             axios.post('/api/books/add', {
                 id: uuid(),
-                text,
-                userId
+                text
             }, {
                 headers: {
-                    'Content-Type': 'application/json'
+                    Authorization: token
                 }
             })
                 .then(res => {
@@ -76,8 +72,11 @@ const ListOfBooks = ({t}) => {
     const deleteBook = (bookId) => {
         setLoading(loading = true)
         axios.post('/api/books/delete', {
-            userId,
             bookId
+        }, {
+            headers: {
+                Authorization: token
+            }
         })
             .then(res => {
                 getBooks()
@@ -92,9 +91,12 @@ const ListOfBooks = ({t}) => {
     const changeBookCompleted = (bookId, completed) => {
         setLoading(loading = true)
         axios.post('/api/books/completed', {
-            userId,
             bookId,
             completed
+        }, {
+            headers: {
+                Authorization: token
+            }
         })
             .then(res => {
                 getBooks()
@@ -113,10 +115,13 @@ const ListOfBooks = ({t}) => {
     const changeBookImportant = (bookId, important, completed) => {
         setLoading(loading = true)
         axios.post('/api/books/important', {
-            userId,
             bookId,
             important,
             completed
+        }, {
+            headers: {
+                Authorization: token
+            }
         })
             .then(res => {
                 getBooks()

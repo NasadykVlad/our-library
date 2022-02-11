@@ -1,11 +1,12 @@
 const User = require('../models/User')
 const {validationResult} = require("express-validator");
 const bcrypter = require("bcryptjs");
+const getUserId = require('../middleware/getUserId.middleware')
 
 class accountController {
     async getAccountInformation(req, res) {
         try {
-            const {userId} = req.query
+            const userId = getUserId(req.headers.authorization)
 
             const user = await User.findOne({_id: userId})
 
@@ -23,7 +24,8 @@ class accountController {
 
     async changeUserName(req, res) {
         try {
-            const {userId, fullName} = req.body
+            const {fullName} = req.body
+            const userId = getUserId(req.headers.authorization)
 
             const user = await User.findOne({_id: userId})
 
@@ -43,7 +45,8 @@ class accountController {
 
     async changeUserPassword(req, res) {
         try {
-            const {userId, oldPassword, newPassword} = req.body
+            const {oldPassword, newPassword} = req.body
+            const userId = getUserId(req.headers.authorization)
 
             const errors = validationResult(req)
             if (!errors.isEmpty()) {

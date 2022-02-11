@@ -1,5 +1,5 @@
-import './app.scss';
-import NavBar from '../navbar/navbar';
+import './App.scss';
+import NavBar from '../navbar/Navbar';
 import {BrowserRouter} from 'react-router-dom';
 import {useRoutes} from "../../routes";
 import {useAuth} from "../../hooks/auth.hook"

@@ -1,11 +1,12 @@
 const File = require('../models/File')
 const fs = require("fs");
+const getUserId = require('../middleware/getUserId.middleware')
 
 class FileController {
     async getFiles(req, res) {
         try {
-
-            const {userId, sort} = req.query
+            const userId = getUserId(req.headers.authorization)
+            const {sort} = req.query
 
             let files
 
@@ -47,7 +48,8 @@ class FileController {
 
     async uploadFile(req, res) {
         try {
-            const {userId, name} = req.query
+            const {name} = req.query
+            const userId = getUserId(req.headers.authorization)
 
             let book = await File.findOne({userId, name})
 
@@ -81,7 +83,8 @@ class FileController {
 
     async downloadFile(req, resp) {
         try {
-            const {userId, id} = req.body
+            const {id} = req.body
+            const userId = getUserId(req.headers.authorization)
 
             const file = await File.findOne({owner: userId, _id: id})
 
@@ -98,7 +101,8 @@ class FileController {
 
     async removeFile(req, resp) {
         try {
-            const {userId, id} = req.body
+            const {id} = req.body
+            const userId = getUserId(req.headers.authorization)
 
             const file = await File.findOne({owner: userId, _id: id})
 
@@ -121,7 +125,8 @@ class FileController {
 
     async shareFile(req, resp) {
         try {
-            const {userId, id} = req.body
+            const {id} = req.body
+            const userId = getUserId(req.headers.authorization)
 
             const file = await File.findOne({owner: userId, _id: id})
 
