@@ -4,7 +4,7 @@ import axios from 'axios'
 import {AuthContext} from "../../context/AuthContext";
 import {Button, Form, ProgressBar, Table} from 'react-bootstrap'
 import {withNamespaces} from 'react-i18next';
-import {BsBook, BsSortNumericDownAlt, BsSortNumericUpAlt} from 'react-icons/bs'
+import {BsSortNumericDownAlt, BsSortNumericUpAlt} from 'react-icons/bs'
 import {MdMenuBook} from 'react-icons/md'
 import {FaFileDownload} from 'react-icons/fa'
 import {FiShare2, FiTrash2} from 'react-icons/fi'
@@ -105,11 +105,10 @@ const FileCloud = ({t}) => {
         }, {
             headers: {
                 Authorization: token
-            },
-            responseType: 'blob'
+            }
         })
             .then(res => {
-                const downloadUrl = window.URL.createObjectURL(res.data)
+                const downloadUrl = res.data.link
                 const link = document.createElement('a')
                 link.href = downloadUrl
                 link.download = file.name
@@ -257,14 +256,13 @@ const FileCloud = ({t}) => {
                         return <tr key={val._id}>
                             <td>{dirFiles.indexOf(val) + 1}</td>
                             <td>
-                                {val.type === 'text/plain' || val.type === 'application/pdf' ? <MdMenuBook/> :
-                                    <BsBook/>}
+                                <MdMenuBook/>
                             </td>
                             <td>
                                 {val.name}
                                 <span style={{'float': 'right'}}>
-                                {val.type === 'text/plain' || val.type === 'application/pdf' ?
-                                    <FiShare2 className='share-ic' onClick={() => shareBook(val._id)}/> : ''}
+
+                                    <FiShare2 className='share-ic' onClick={() => shareBook(val._id)}/>
                                     <FaFileDownload onClick={(e) => downloadFile(e, val)} className='download-icon'/>
                                 <FiTrash2 onClick={() => deleteFile(val._id)} className='remove-icon'/>
                             </span>

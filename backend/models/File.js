@@ -8,6 +8,7 @@ const schema = new Schema({
     type: {type: String},
     date: {type: Date, default: Date.now()},
     size: {type: Number, default: 0},
+    link: {type: String}
 })
 
 module.exports = model('File', schema)

@@ -1,6 +1,41 @@
 const File = require('../models/File')
 const fs = require("fs");
+const AWS = require('aws-sdk');
 const getUserId = require('../middleware/getUserId.middleware')
+
+const ID = 'AKIA5UACJVDVXBQSCTFU';
+const SECRET = '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';
+const BUCKET_NAME = 'our-library-policy';
+
+const s3 = new AWS.S3({
+    accessKeyId: ID,
+    secretAccessKey: SECRET
+});
+
+const uploadFile = (file) => {
+    const params = {
+        Bucket: BUCKET_NAME,
+        Key: file.name, // File name you want to save as in S3
+        Body: file.data,
+        ACL: 'public-read'
+    };
+
+    s3.upload(params, function(err, data) {
+        if (err) {
+            throw err;
+        }
+        console.log(`File uploaded successfully. ${data.Location}`);
+    });
+};
+
+const getFileStream = (fileKey) => {
+    const downloadFileStream = {
+        Key: fileKey,
+        BucketBucket: BUCKET_NAME
+    }
+
+    return s3.getObject(downloadParams).createReadStream()
+}
 
 class FileController {
     async getFiles(req, res) {
@@ -48,30 +83,37 @@ class FileController {
 
     async uploadFile(req, res) {
         try {
+
             const {name} = req.query
             const userId = getUserId(req.headers.authorization)
+
 
             let book = await File.findOne({userId, name})
 
             if (!book) {
                 if (req.files.file) {
                     const file = req.files.file
+                    const params = {
+                        Bucket: BUCKET_NAME,
+                        Key: `${userId}/${file.name}`, // File name you want to save as in S3
+                        Body: file.data,
+                        ACL: 'public-read'
+                    };
 
-                    const fileOwnerPath = `D:\\Programming\\WEB_UI_PROGRAMMING\\Project\\our-library\\backend\\files\\${userId}`
-                    const filePath = `D:\\Programming\\WEB_UI_PROGRAMMING\\Project\\our-library\\backend\\files\\${userId}\\${file.name}`
+                    s3.upload(params, async function(err, data) {
+                        console.log(`File uploaded successfully. ${data.Location}`);
 
-                    fs.mkdirSync(fileOwnerPath, { recursive: true })
-                    file.mv(filePath)
+                        const dbFile = new File({
+                            name: file.name,
+                            type: file.mimetype,
+                            size: file.size,
+                            owner: userId,
+                            link: data.Location
+                        })
 
-                    const dbFile = new File({
-                        name: file.name,
-                        type: file.mimetype,
-                        size: file.size,
-                        owner: userId
-                    })
-
-                    await dbFile.save()
-                    res.json(dbFile)
+                        await dbFile.save()
+                        res.json(dbFile)
+                    });
                 }
             } else {
                 res.json({error: 'book-is-already-exists'})
@@ -88,10 +130,10 @@ class FileController {
 
             const file = await File.findOne({owner: userId, _id: id})
 
-            const filePath = `D:\\Programming\\WEB_UI_PROGRAMMING\\Project\\our-library\\backend\\files\\${userId}\\${file.name}`
-
-            if (fs.existsSync(filePath)) {
-                return resp.download(filePath, file.name)
+            if (file) {
+                resp.json({link: file.link})
+            } else {
+                resp.json({status: 'error'})
             }
 
         } catch (e) {
@@ -105,17 +147,19 @@ class FileController {
             const userId = getUserId(req.headers.authorization)
 
             const file = await File.findOne({owner: userId, _id: id})
-
-            const filePath = `D:\\Programming\\WEB_UI_PROGRAMMING\\Project\\our-library\\backend\\files\\${userId}\\${file.name}`
+            
 
             if (file) {
+                const params = {
+                    Bucket: BUCKET_NAME,
+                    Key: `${userId}/${file.name}`, // File name you want to save as in S3
+                };
+
+                s3.deleteObject(params, (req,res) => {})
+                
                 await File.deleteOne({owner: userId, _id: id})
 
                 resp.json({status: 'ok'})
-            }
-
-            if (filePath) {
-                fs.rmSync(filePath)
             }
 
         } catch (e) {
@@ -130,10 +174,8 @@ class FileController {
 
             const file = await File.findOne({owner: userId, _id: id})
 
-            const filePath = `D:\\Programming\\WEB_UI_PROGRAMMING\\Project\\our-library\\backend\\files\\${userId}\\${file.name}`
-
-            if (file && filePath) {
-                resp.json({link: `localhost:5001/${userId}/${file.name}`})
+            if (file) {
+                resp.json({link: file.link})
             } else {
                 resp.json({message: 'File is not defined'})
             }
