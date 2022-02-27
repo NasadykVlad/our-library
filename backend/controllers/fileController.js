@@ -3,8 +3,8 @@ const fs = require("fs");
 const AWS = require('aws-sdk');
 const getUserId = require('../middleware/getUserId.middleware')
 
-const ID = 'AKIA5UACJVDVXBQSCTFU';
-const SECRET = '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';
+const ID = 'AKIA5UACJVDV5TMNJKXC';
+const SECRET = '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';
 const BUCKET_NAME = 'our-library-policy';
 
 const s3 = new AWS.S3({
@@ -12,30 +12,6 @@ const s3 = new AWS.S3({
     secretAccessKey: SECRET
 });
 
-const uploadFile = (file) => {
-    const params = {
-        Bucket: BUCKET_NAME,
-        Key: file.name, // File name you want to save as in S3
-        Body: file.data,
-        ACL: 'public-read'
-    };
-
-    s3.upload(params, function(err, data) {
-        if (err) {
-            throw err;
-        }
-        console.log(`File uploaded successfully. ${data.Location}`);
-    });
-};
-
-const getFileStream = (fileKey) => {
-    const downloadFileStream = {
-        Key: fileKey,
-        BucketBucket: BUCKET_NAME
-    }
-
-    return s3.getObject(downloadParams).createReadStream()
-}
 
 class FileController {
     async getFiles(req, res) {
@@ -97,12 +73,10 @@ class FileController {
                         Bucket: BUCKET_NAME,
                         Key: `${userId}/${file.name}`, // File name you want to save as in S3
                         Body: file.data,
-                        ACL: 'public-read'
+                        ACL: 'public-read-write'
                     };
 
                     s3.upload(params, async function(err, data) {
-                        console.log(`File uploaded successfully. ${data.Location}`);
-
                         const dbFile = new File({
                             name: file.name,
                             type: file.mimetype,
@@ -152,10 +126,10 @@ class FileController {
             if (file) {
                 const params = {
                     Bucket: BUCKET_NAME,
-                    Key: `${userId}/${file.name}`, // File name you want to save as in S3
+                    Key: `${userId}/${file.name}` // File name you want to save as in S3
                 };
 
-                s3.deleteObject(params, (req,res) => {})
+                s3.deleteObject(params)
                 
                 await File.deleteOne({owner: userId, _id: id})
 
