@@ -19,7 +19,7 @@ app.use('/api/account', require('./routes/account.routes'))
 
 async function start() {
     try {
-        await mongoose.connect('mongodb+srv://nasadyk:lalka228@cluster0.fhykj.mongodb.net/OurLibrary?retryWrites=true&w=majority', {
+        await mongoose.connect(process.env.DB, {
             useNewUrlParser: true,
             useUnifiedTopology: true
         })

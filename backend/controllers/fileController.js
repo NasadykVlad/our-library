@@ -2,10 +2,13 @@ const File = require('../models/File')
 const fs = require("fs");
 const AWS = require('aws-sdk');
 const getUserId = require('../middleware/getUserId.middleware')
+require('dotenv').config()
 
-const ID = 'AKIA5UACJVDV5TMNJKXC';
-const SECRET = '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';
-const BUCKET_NAME = 'our-library-policy';
+
+const ID = process.env.ID;
+const SECRET = process.env.SECRET;
+
+const BUCKET_NAME = process.env.BUCKET_NAME;
 
 const s3 = new AWS.S3({
     accessKeyId: ID,
@@ -129,7 +132,8 @@ class FileController {
                     Key: `${userId}/${file.name}` // File name you want to save as in S3
                 };
 
-                s3.deleteObject(params)
+                s3.deleteObject(params, (req, res) => {
+                })
                 
                 await File.deleteOne({owner: userId, _id: id})
 

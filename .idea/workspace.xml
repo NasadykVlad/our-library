@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="ef0a591f-332d-47cd-b87c-02cff59c5a3e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/controllers/authController.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/controllers/authController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/controllers/fileController.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/controllers/fileController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/index.js" afterDir="false" />
     </list>
@@ -103,7 +105,13 @@
       <workItem from="1645732686316" duration="432000" />
       <workItem from="1645733203487" duration="13000" />
       <workItem from="1645962892345" duration="11229000" />
-      <workItem from="1645978392926" duration="3920000" />
+      <workItem from="1645978392926" duration="5306000" />
+      <workItem from="1645990085711" duration="21000" />
+      <workItem from="1645991196837" duration="698000" />
+      <workItem from="1646041758959" duration="114000" />
+      <workItem from="1646128531677" duration="163000" />
+      <workItem from="1646128778480" duration="462000" />
+      <workItem from="1646129509186" duration="226000" />
     </task>
     <servers />
   </component>

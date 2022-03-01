@@ -3,6 +3,7 @@ const {check, validationResult} = require('express-validator')
 const bcrypter = require('bcryptjs')
 const jwtToken = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
+require('dotenv').config()
 
 class authController {
 
@@ -56,7 +57,7 @@ class authController {
             if (user) {
                 bcrypter.compare(password, user.password, (err, ress) => {
                     if (ress) {
-                        const jwtSecret = '213fdfdsjfsjUs]]f[g%dsodvt2352Fsdkm!!'
+                        const jwtSecret = process.env.JWT_SECRET
 
                         const token = jwtToken.sign(
                             {UserId: user.id},
