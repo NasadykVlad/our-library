@@ -1,5 +1,5 @@
 const User = require('../models/User')
-const {check, validationResult} = require('express-validator')
+const { check, validationResult } = require('express-validator')
 const bcrypter = require('bcryptjs')
 const jwtToken = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
@@ -17,23 +17,26 @@ class authController {
                 })
             }
 
-            const {email, password, passwordConfirm, fullName} = req.body
+            const { email, password, passwordConfirm, fullName } = req.body
 
-            const isUsed = await User.findOne({email})
+            const isUsed = await User.findOne({ email })
 
             if (isUsed) {
-                res.send({message: 'email-is-used'})
+                res.send({ message: 'email-is-used' })
             } else {
                 const hashedPassword = await bcrypter.hash(password, 12)
                 const hashedPasswordConfirm = await bcrypter.hash(passwordConfirm, 12)
 
                 const user = new User({
-                    email, password: hashedPassword, passwordConfirm: hashedPasswordConfirm, fullName
+                    email,
+                    password: hashedPassword,
+                    passwordConfirm: hashedPasswordConfirm,
+                    fullName
                 })
 
                 await user.save()
 
-                res.send({message: 'user-created'})
+                res.send({ message: 'user-created' })
             }
         } catch (err) {
             console.log(err)
@@ -50,27 +53,25 @@ class authController {
                 })
             }
 
-            const {email, password} = req.body
+            const { email, password } = req.body
 
-            const user = await User.findOne({email})
+            const user = await User.findOne({ email })
 
             if (user) {
                 bcrypter.compare(password, user.password, (err, ress) => {
                     if (ress) {
                         const jwtSecret = process.env.JWT_SECRET
 
-                        const token = jwtToken.sign(
-                            {UserId: user.id},
-                            jwtSecret,
-                            {expiresIn: '1h'}
+                        const token = jwtToken.sign({ UserId: user.id },
+                            jwtSecret, { expiresIn: '1h' }
                         )
-                        res.send({token, userId: user.id})
+                        res.send({ token, userId: user.id })
                     } else {
-                        res.send({message: 'an-incorrect-password'})
+                        res.send({ message: 'an-incorrect-password' })
                     }
                 })
             } else {
-                res.send({message: 'you-dont-register'})
+                res.send({ message: 'you-dont-register' })
             }
         } catch (err) {
             console.log(err)
@@ -87,16 +88,16 @@ class authController {
                 })
             }
 
-            const {email} = req.body
+            const { email } = req.body
 
-            const user = await User.findOne({email})
+            const user = await User.findOne({ email })
 
             if (user) {
                 let transporter = nodemailer.createTransport({
                     service: 'gmail',
                     auth: {
-                        user: 't.empire228@gmail.com',
-                        pass: 'Vlad2001nasadyk'
+                        user: process.env.GMAIL_EMAIL,
+                        pass: process.env.GMAIL_PASSWORD
                     }
                 });
 
@@ -112,10 +113,10 @@ class authController {
 
                 await user.save()
 
-                res.json({message: 'mail-send'})
+                res.json({ message: 'mail-send' })
             } else {
                 res.status(200).json({
-                    errors: [{msg: 'you-dont-register'}],
+                    errors: [{ msg: 'you-dont-register' }],
                     message: 'Некоректні дані вводу'
                 })
             }
@@ -134,9 +135,9 @@ class authController {
                 })
             }
 
-            const {email, token, newPassword} = req.body
+            const { email, token, newPassword } = req.body
 
-            const user = await User.findOne({email})
+            const user = await User.findOne({ email })
 
             if (user) {
                 if (+token === user.tokenReset) {
@@ -148,15 +149,15 @@ class authController {
 
                     await user.save()
 
-                    res.json({message: 'password-change'})
+                    res.json({ message: 'password-change' })
                 } else {
                     res.status(200).json({
-                        errors: [{msg: 'token-is-not-correct'}],
+                        errors: [{ msg: 'token-is-not-correct' }],
                         message: 'Некоректні дані вводу'
                     })
                 }
             } else {
-                res.json({message: 'error'})
+                res.json({ message: 'error' })
             }
         } catch (err) {
             console.log(err)
